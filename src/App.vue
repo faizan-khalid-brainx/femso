@@ -12,7 +12,7 @@ html {
   font-size: 16px;
 }
 
-/* mobile devices (tablets, 544px and below) The navbar toggle appears at this breakpoint */
+/* mobile devices (mobile, 544px and below) The navbar toggle appears at this breakpoint */
 @media (max-width: 544px) {
   html {
     font-size: 8px;

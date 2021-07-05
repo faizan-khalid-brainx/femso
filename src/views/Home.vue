@@ -5,13 +5,24 @@
   <!--  </div>-->
   <div class="container">
     <question-heading
-      :title="'Is there a reliable language model/package that can accurately identify Country/city from unstructured text?'">
+      :title="'All Questions'">
     </question-heading>
     <div class="row">
-      <h2 id="count">21,434,448 questions</h2>
+      <h2 id="count">{{ 0 }} questions</h2>
     </div>
     <div class="w-100 line-end">
     </div>
+    <question-view
+    :questionTitle="''"
+    :questionLink="''"
+    :questionContent="''"
+    :voteCount="0"
+    :answerCount="0"
+    :questionDate="''"
+    :name="''"
+    :profileLink="''"
+    :imageLink="''"
+    ></question-view>
   </div>
 </template>
 
@@ -20,10 +31,22 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 
 import QuestionHeading from '@/components/QuestionHeading'
+import QuestionView from '@/components/QuestionView'
 
 export default {
   name: 'Home',
-  components: { QuestionHeading }
+  components: { QuestionView, QuestionHeading },
+  props: {
+    questionTitle: String, // components for the question view component
+    questionLink: String,
+    questionContent: String,
+    voteCount: Number,
+    answerCount: Number,
+    questionDate: String,
+    name: String, // content for the profile component
+    profileLink: String,
+    imageLink: String
+  }
 
   // components: {
   //   HelloWorld
