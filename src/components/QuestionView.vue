@@ -18,7 +18,7 @@
           {{ questionContent }}
         </div>
         <div>
-          <div class="action-time">asked {{ questionDate }}</div>
+          <div class="d-flex justify-content-end action-time">asked {{ questionDate }}</div>
           <div>
             <creator-view
             :name="name"

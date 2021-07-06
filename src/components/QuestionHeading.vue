@@ -15,7 +15,7 @@
     <div class="col px-0">
       <div class="float-end">
         <div id="button" class="btn btn-primary">
-          Ask Question
+          <router-link style="color: white" to="/question">Ask Question</router-link>
         </div>
       </div>
     </div>
@@ -40,5 +40,24 @@ export default {
   }
   #button{
     font-size: 13px;
+  }
+  a:link {
+    text-decoration: none;
+    color: #3c4146;
+  }
+
+  a:visited {
+    text-decoration: none;
+    color: #3c4146;
+  }
+
+  a:hover {
+    text-decoration: none;
+    color: #3c4146;
+  }
+
+  a:active {
+    text-decoration: none;
+    color: #3c4146;
   }
 </style>

@@ -1,8 +1,4 @@
 <template>
-  <!--  <div class="home">-->
-  <!--    <img alt="Vue logo" src="../assets/logo.png">-->
-  <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
-  <!--  </div>-->
   <div class="container">
     <question-heading
       :title="'All Questions'">
@@ -13,15 +9,15 @@
     <div class="w-100 line-end">
     </div>
     <question-view
-    :questionTitle="''"
-    :questionLink="''"
-    :questionContent="''"
-    :voteCount="0"
-    :answerCount="0"
-    :questionDate="''"
-    :name="''"
-    :profileLink="''"
-    :imageLink="''"
+      :questionTitle="''"
+      :questionLink="''"
+      :questionContent="''"
+      :voteCount="0"
+      :answerCount="0"
+      :questionDate="''"
+      :name="''"
+      :profileLink="''"
+      :imageLink="''"
     ></question-view>
   </div>
 </template>
@@ -35,7 +31,10 @@ import QuestionView from '@/components/QuestionView'
 
 export default {
   name: 'Home',
-  components: { QuestionView, QuestionHeading },
+  components: {
+    QuestionView,
+    QuestionHeading
+  },
   props: {
     questionTitle: String, // components for the question view component
     questionLink: String,
@@ -47,10 +46,6 @@ export default {
     profileLink: String,
     imageLink: String
   }
-
-  // components: {
-  //   HelloWorld
-  // }
 }
 </script>
 
