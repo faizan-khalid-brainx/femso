@@ -6,9 +6,6 @@
         </stats>
         <stats :count="answerCount" :item="'answers'">
         </stats>
-        <div class="view-msg" style="padding-top: 4px">
-          31 views
-        </div>
       </div>
       <div class="col">
         <h3>
