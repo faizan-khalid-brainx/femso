@@ -2,9 +2,9 @@
   <div class="container col-12" style="border-bottom: #eff0f1 1px solid">
     <div class="row mx-0 py-2">
       <div class="px-0 d-flex flex-column justify-content-center" style="width: 58px">
-        <stats :count="voteCount" :item="'votes'">
+        <stats :count="voteCount" :item="'Votes'">
         </stats>
-        <stats :count="answerCount" :item="'answers'">
+        <stats :count="answerCount" :item="'Answers'">
         </stats>
       </div>
       <div class="col">
@@ -15,7 +15,7 @@
           {{ questionContent }}
         </div>
         <div>
-          <div class="d-flex justify-content-end action-time">asked {{ questionDate }}</div>
+          <div class="d-flex justify-content-end action-time">Asked: {{ questionDate }}</div>
           <div>
             <creator-view
               :name="name"
