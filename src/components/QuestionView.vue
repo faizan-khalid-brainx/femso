@@ -6,9 +6,6 @@
         </stats>
         <stats :count="answerCount" :item="'answers'">
         </stats>
-        <div class="view-msg" style="padding-top: 4px">
-          31 views
-        </div>
       </div>
       <div class="col">
         <h3>
@@ -21,9 +18,10 @@
           <div class="d-flex justify-content-end action-time">asked {{ questionDate }}</div>
           <div>
             <creator-view
-            :name="name"
-            :image-link="imageLink"
-            :profile-link="profileLink"></creator-view>
+              :name="name"
+              :image-link="imageLink"
+              :profile-link="profileLink">
+            </creator-view>
           </div>
         </div>
       </div>
@@ -70,28 +68,11 @@ export default {
   overflow: hidden;
 }
 
-.view-msg {
-  text-align: center;
-  font-size: 12px;
-}
-
 h3 {
   font-size: 1.30769231rem
 }
 
-a:link {
-  text-decoration: none;
-}
-
-a:visited {
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-a:active {
+a:link, a:visited, a:hover, a:active {
   text-decoration: none;
 }
 

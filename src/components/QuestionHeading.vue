@@ -2,7 +2,7 @@
   <div class="row mx-0">
     <div class="col-9 px-0">
       <div v-if="link">
-        <a :href="link"> <h1>
+        <a :href="link"><h1>
           {{ title }}
         </h1></a>
       </div>
@@ -33,31 +33,19 @@ export default {
 </script>
 
 <style scoped>
-  h1 {
-    font-size: 2.07692308rem;
-    line-height: 1.35;
-    margin-bottom: 0;
-  }
-  #button{
-    font-size: 13px;
-  }
-  a:link {
-    text-decoration: none;
-    color: #3c4146;
-  }
+h1 {
+  font-size: 2.07692308rem;
+  line-height: 1.35;
+  margin-bottom: 0;
+}
 
-  a:visited {
-    text-decoration: none;
-    color: #3c4146;
-  }
+#button {
+  font-size: 13px;
+}
 
-  a:hover {
-    text-decoration: none;
-    color: #3c4146;
-  }
+a:link, a:visited, a:hover, a:link {
+  text-decoration: none;
+  color: #3c4146;
+}
 
-  a:active {
-    text-decoration: none;
-    color: #3c4146;
-  }
 </style>
