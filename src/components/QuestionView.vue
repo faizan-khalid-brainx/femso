@@ -20,7 +20,8 @@
             <creator-view
               :name="name"
               :image-link="imageLink"
-              :profile-link="profileLink"></creator-view>
+              :profile-link="profileLink">
+            </creator-view>
           </div>
         </div>
       </div>

@@ -43,7 +43,7 @@ h1 {
   font-size: 13px;
 }
 
-a:link, a:visited, a:hover, a:active {
+a:link, a:visited, a:hover, a:link {
   text-decoration: none;
   color: #3c4146;
 }
