@@ -1,10 +1,43 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
+  <div v-if="isAuthenticated" id="nav">
+    <router-link to="/">Home</router-link>
+    |
     <router-link to="/about">About</router-link>
+    |
+    <a href="" @click.prevent="logout()">Logout</a>
   </div>
   <router-view/>
 </template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  name: 'Login',
+  computed: {
+    isAuthenticated () {
+      const returnable = window.localStorage.getItem('api_token')
+      return returnable == null ? 0 : 1
+    }
+  },
+  beforeMount () {
+    if (!this.isAuthenticated) {
+      this.$router.replace('login')
+    }
+  },
+  methods: {
+    async logout () {
+      await axios.get('http://127.0.0.1:8000/api/logout', {
+        headers: {
+          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+        }
+      })
+      window.localStorage.removeItem('api_token')
+      window.location = '/'
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 

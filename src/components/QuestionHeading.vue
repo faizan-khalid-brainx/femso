@@ -47,5 +47,4 @@ a:link, a:visited, a:hover, a:link {
   text-decoration: none;
   color: #3c4146;
 }
-
 </style>
