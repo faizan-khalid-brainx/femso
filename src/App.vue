@@ -2,8 +2,6 @@
   <div v-if="isAuthenticated" id="nav">
     <router-link to="/">Home</router-link>
     |
-    <router-link to="/about">About</router-link>
-    |
     <a href="" @click.prevent="logout()">Logout</a>
   </div>
   <router-view/>
@@ -90,6 +88,7 @@ html {
 #nav {
   padding: 30px;
   text-align: center;
+
   a {
     font-weight: bold;
     color: #2c3e50;

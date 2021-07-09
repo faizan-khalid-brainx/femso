@@ -11,7 +11,7 @@
     <div v-for="question in questions" :key="'question' + question.id">
       <question-view
         :questionTitle="question.title"
-        :questionLink="''"
+        :questionLink="'/question/' + question.id"
         :questionContent="question.content"
         :voteCount="question.user_votes_count"
         :answerCount="question.answers_count"

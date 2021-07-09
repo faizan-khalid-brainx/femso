@@ -9,7 +9,7 @@
       </div>
       <div class="col">
         <h3>
-          <a :href="questionLink"> {{ questionTitle }}</a>
+          <router-link :to="questionLink"> {{ questionTitle }}</router-link>
         </h3>
         <div class="excerpt">
           {{ questionContent }}

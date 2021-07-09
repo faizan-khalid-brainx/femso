@@ -45,7 +45,6 @@ export default {
   },
   methods: {
     async submitForm () {
-      console.log('test submit button')
       const payload = {
         title: this.title,
         content: this.body
@@ -56,6 +55,7 @@ export default {
         }
       }))
       console.log(data)
+      // changes login from page refresh to re-fetch data and pragmatic navigate instead of refresh
       window.location = '/'
     }
   }
