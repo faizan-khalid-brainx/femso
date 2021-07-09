@@ -2,7 +2,7 @@
   <div>
     <a class="upvote d-block">Up</a>
     <strong>
-      {{ Votes }}
+      {{ votes }}
     </strong>
     <a class="upvote d-block">Down</a>
   </div>
@@ -11,7 +11,7 @@
 <script>
 export default {
   props: {
-    Votes: {
+    votes: {
       Number,
       default: 0
     }

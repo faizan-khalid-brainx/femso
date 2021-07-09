@@ -9,7 +9,7 @@
       <question-component
         :body="question.content"
         :user="question.user"
-        :vote="question.vote"
+        :vote="voteCount(question.vote)"
         :question-date="question.created_at"
       >
       </question-component>
@@ -22,7 +22,7 @@
         <question-component
           :body="answer.content"
           :user="answer.user"
-          :vote="answer.vote"
+          :vote="voteCount(answer.vote)"
           :question-date="answer.created_at"
         ></question-component>
         <div class="hr"></div>
@@ -65,9 +65,6 @@ export default {
     QuestionComponent,
     QuestionHeading
   },
-  async created () {
-    await this.fetchData()
-  },
   data () {
     return {
       question: {},
@@ -75,10 +72,20 @@ export default {
       content: ''
     }
   },
+  async created () {
+    await this.fetchData()
+  },
   methods: {
+    voteCount (voteObject) {
+      if (typeof voteObject !== 'undefined') {
+        return voteObject['1'] - voteObject['0']
+      } else {
+        return 0
+      }
+    },
     async getPost () {
       try {
-        const { data } = await axios.get('http://127.0.0.1:8000/api/questionPost?id=' + this.$route.params.id)
+        const { data } = await axios.get(`http://127.0.0.1:8000/api/questionPost?id= + ${this.$route.params.id}`)
         return data
       } catch (exception) {
         console.log(exception)
