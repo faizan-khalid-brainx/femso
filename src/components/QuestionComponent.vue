@@ -2,8 +2,11 @@
   <div class="container col-12">
     <div class="row mx-0 py-2">
       <div class="px-0 d-flex flex-column justify-content-center" style="width: 58px">
-        <vote-component
-          :votes="vote"
+        <vote-component @refresh-votes="$emit('refreshVotes')"
+                        :votes="vote"
+                        :id="id"
+                        :vote-button="voteButton"
+                        :is-question="isQuestion"
         >
         </vote-component>
       </div>
@@ -51,9 +54,20 @@ export default {
       Number,
       default: 0
     },
+    isQuestion: Boolean,
+    voteButton: Number,
     questionDate: {
       String,
       default: ''
+    },
+    id: {
+      Number,
+      required: true
+    }
+  },
+  data () {
+    return {
+      voteState: this.vote
     }
   }
 }

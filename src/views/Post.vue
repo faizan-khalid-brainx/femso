@@ -1,29 +1,33 @@
 <template>
   <div class="post">
     <div class="container">
-      <question-heading
-        :title="question.title"
-        :link="'/question/' + question.id">
+      <question-heading v-if="question"
+                        :title="question.title"
+                        :link="'/question/' + question.id">
       </question-heading>
       <div class="w-100 line-end"></div>
-      <question-component
-        :body="question.content"
-        :user="question.user"
-        :vote="voteCount(question.vote)"
-        :question-date="question.created_at"
-      >
-      </question-component>
+      <question-component v-if="question" @refresh-votes="fetchData"
+                          :body="question.content"
+                          :user="question.user"
+                          :vote="voteCount(question.vote)"
+                          :question-date="question.created_at"
+                          :vote-button="question.isVoted"
+                          :id="question.id"
+                          :is-question="true"
+      ></question-component>
       <div class="hr"></div>
       <!-- Answer Row -->
       <div class="p-4">
         <h2>{{ answers.length }} Answer</h2>
       </div>
       <div v-for="answer in answers" :key="'answer' + answer.id">
-        <question-component
+        <question-component @refresh-votes="fetchData"
           :body="answer.content"
           :user="answer.user"
           :vote="voteCount(answer.vote)"
           :question-date="answer.created_at"
+          :vote-button="answer.isVoted"
+          :id="answer.id"
         ></question-component>
         <div class="hr"></div>
         <div class="line-end"></div>
@@ -67,7 +71,7 @@ export default {
   },
   data () {
     return {
-      question: {},
+      question: undefined,
       answers: [],
       content: ''
     }
@@ -85,7 +89,11 @@ export default {
     },
     async getPost () {
       try {
-        const { data } = await axios.get(`http://127.0.0.1:8000/api/questionPost?id= + ${this.$route.params.id}`)
+        const { data } = await axios.get(`http://127.0.0.1:8000/api/questionPost?id= + ${this.$route.params.id}`, {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        })
         return data
       } catch (exception) {
         console.log(exception)
@@ -112,8 +120,8 @@ export default {
     },
     async fetchData () {
       const data = await this.getPost()
-      this.$data.question = data.question
-      this.$data.answers = data.answers
+      this.question = data.question
+      this.answers = data.answers
       this.content = ''
     }
   }
