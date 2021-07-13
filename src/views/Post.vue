@@ -76,6 +76,18 @@ export default {
       content: ''
     }
   },
+  computed: {
+    isAuthenticated () {
+      const returnable = window.localStorage.getItem('api_token')
+      return returnable == null ? 0 : 1
+    }
+  },
+  beforeMount () {
+    console.log('post component mounted')
+    if (!this.isAuthenticated) {
+      this.$router.replace('login')
+    }
+  },
   async created () {
     await this.fetchData()
   },

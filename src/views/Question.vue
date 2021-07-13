@@ -43,6 +43,18 @@ export default {
       body: ''
     }
   },
+  computed: {
+    isAuthenticated () {
+      const returnable = window.localStorage.getItem('api_token')
+      return returnable == null ? 0 : 1
+    }
+  },
+  beforeMount () {
+    console.log('question component mounted')
+    if (!this.isAuthenticated) {
+      this.$router.replace('login')
+    }
+  },
   methods: {
     async submitForm () {
       const payload = {
@@ -55,8 +67,7 @@ export default {
         }
       }))
       console.log(data)
-      // changes login from page refresh to re-fetch data and pragmatic navigate instead of refresh
-      window.location = '/'
+      await this.$router.replace('/')
     }
   }
 }
