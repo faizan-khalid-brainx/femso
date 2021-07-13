@@ -71,7 +71,6 @@ export default {
       }
     },
     async update_upvote (update) {
-      console.log('upvote updated')
       let callee = 'answer'
       if (this.isQuestion) {
         callee = 'question'
@@ -82,16 +81,14 @@ export default {
         update: update // 1 for create & 0 for delete
       }
       // call api here
-      const { data } = await (axios.post(`http://127.0.0.1:8000/api/${callee}-vote`, payload, {
+      await (axios.post(`http://127.0.0.1:8000/api/${callee}-vote`, payload, {
         headers: {
           Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
         }
       }))
       this.$emit('refreshVotes')
-      console.log(callee, data)
     },
     async update_downvote (update) {
-      console.log('downvote updated')
       let callee = 'answer'
       if (this.isQuestion) {
         callee = 'question'
@@ -102,12 +99,11 @@ export default {
         update: update // 1 for create & 0 for delete
       }
       // call api here
-      const { data } = await (axios.post(`http://127.0.0.1:8000/api/${callee}-vote`, payload, {
+      await (axios.post(`http://127.0.0.1:8000/api/${callee}-vote`, payload, {
         headers: {
           Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
         }
       }))
-      console.log(callee, data)
     }
   }
 }
