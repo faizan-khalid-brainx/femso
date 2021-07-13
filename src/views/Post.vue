@@ -22,12 +22,12 @@
       </div>
       <div v-for="answer in answers" :key="'answer' + answer.id">
         <question-component @refresh-votes="fetchData"
-          :body="answer.content"
-          :user="answer.user"
-          :vote="voteCount(answer.vote)"
-          :question-date="answer.created_at"
-          :vote-button="answer.isVoted"
-          :id="answer.id"
+                            :body="answer.content"
+                            :user="answer.user"
+                            :vote="voteCount(answer.vote)"
+                            :question-date="answer.created_at"
+                            :vote-button="answer.isVoted"
+                            :id="answer.id"
         ></question-component>
         <div class="hr"></div>
         <div class="line-end"></div>
@@ -107,7 +107,7 @@ export default {
         })
         return data
       } catch (exception) {
-        console.log(exception)
+        console.log(exception.message)
       }
       console.log('Unable to fetch Post')
       return {
@@ -121,13 +121,17 @@ export default {
         content: this.content,
         question_id: this.$route.params.id
       }
-      const { data } = await (axios.post('http://127.0.0.1:8000/api/answer', payload, {
-        headers: {
-          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
-        }
-      }))
-      console.log(data)
-      await this.fetchData()
+      try {
+        const { data } = await (axios.post('http://127.0.0.1:8000/api/answer', payload, {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        }))
+        console.log(data)
+        await this.fetchData()
+      } catch (error) {
+        console.error(error.message)
+      }
     },
     async fetchData () {
       const data = await this.getPost()

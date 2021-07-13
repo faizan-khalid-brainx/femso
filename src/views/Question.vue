@@ -61,13 +61,17 @@ export default {
         title: this.title,
         content: this.body
       }
-      const { data } = await (axios.post('http://127.0.0.1:8000/api/question', payload, {
-        headers: {
-          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
-        }
-      }))
-      console.log(data)
-      await this.$router.replace('/')
+      try {
+        const { data } = await (axios.post('http://127.0.0.1:8000/api/question', payload, {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        }))
+        console.log(data)
+        await this.$router.replace('/')
+      } catch (error) {
+        console.error(error.message)
+      }
     }
   }
 }

@@ -52,7 +52,7 @@ export default {
         const { data } = await axios.get('http://127.0.0.1:8000/api/show-question')
         return data.questions
       } catch (exception) {
-        console.log(exception)
+        console.error(exception.message)
       }
       console.log('Unable to fetch Questions')
       return []

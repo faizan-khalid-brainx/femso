@@ -23,7 +23,6 @@ export default {
   },
   data () {
     return {
-      votesState: this.votes,
       upVoted: false,
       downVoted: false
     }
@@ -46,12 +45,10 @@ export default {
     },
     upVote () {
       if (this.downVoted) {
-        document.getElementById('vote-down' + this.id).classList.toggle('disabled')
         this.downVoted = false
         // REMOVE DOWNVOTE CALL
         this.update_downvote(0)
       } else {
-        document.getElementById('vote-up' + this.id).classList.toggle('disabled')
         this.upVoted = !this.upVoted
         // ADD UPVOTE OR REMOVE UPVOTE
         this.update_upvote(this.upVoted)
@@ -59,12 +56,10 @@ export default {
     },
     downVote () {
       if (this.upVoted) {
-        document.getElementById('vote-up' + this.id).classList.toggle('disabled')
         this.upVoted = false
         // REMOVE UPVOTE
         this.update_upvote(0)
       } else {
-        document.getElementById('vote-down' + this.id).classList.toggle('disabled')
         this.downVoted = !this.downVoted
         // ADD DOWNVOTE OR REMOVE UPVOTE
         this.update_downvote(this.downVoted)
@@ -81,12 +76,16 @@ export default {
         update: update // 1 for create & 0 for delete
       }
       // call api here
-      await (axios.post(`http://127.0.0.1:8000/api/${callee}-vote`, payload, {
-        headers: {
-          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
-        }
-      }))
-      this.$emit('refreshVotes')
+      try {
+        await (axios.post(`http://127.0.0.1:8000/api/${callee}-vote`, payload, {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        }))
+        this.$emit('refreshVotes')
+      } catch (error) {
+        console.error(error.message)
+      }
     },
     async update_downvote (update) {
       let callee = 'answer'
@@ -99,12 +98,16 @@ export default {
         update: update // 1 for create & 0 for delete
       }
       // call api here
-      await (axios.post(`http://127.0.0.1:8000/api/${callee}-vote`, payload, {
-        headers: {
-          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
-        }
-      }))
-      this.$emit('refreshVotes')
+      try {
+        await (axios.post(`http://127.0.0.1:8000/api/${callee}-vote`, payload, {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        }))
+        this.$emit('refreshVotes')
+      } catch (error) {
+        console.error(error.message)
+      }
     }
   }
 }

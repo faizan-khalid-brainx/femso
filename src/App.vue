@@ -25,13 +25,17 @@ export default {
   },
   methods: {
     async logout () {
-      await axios.get('http://127.0.0.1:8000/api/logout', {
-        headers: {
-          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
-        }
-      })
-      window.localStorage.removeItem('api_token')
-      window.location = '/'
+      try {
+        await axios.get('http://127.0.0.1:8000/api/logout', {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        })
+        window.localStorage.removeItem('api_token')
+        await this.$router.replace('/')
+      } catch (error) {
+        console.error(error.message)
+      }
     }
   }
 }
