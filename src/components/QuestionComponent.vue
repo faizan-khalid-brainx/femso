@@ -78,6 +78,5 @@ export default {
   font-size: 12px;
   collapse: #8b939b;
   opacity: 0.6;
-  padding-right: 5.2%;
 }
 </style>
