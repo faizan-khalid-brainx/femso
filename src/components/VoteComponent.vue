@@ -104,6 +104,7 @@ export default {
           Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
         }
       }))
+      this.$emit('refreshVotes')
     }
   }
 }

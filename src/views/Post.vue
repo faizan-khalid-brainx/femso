@@ -83,7 +83,6 @@ export default {
     }
   },
   beforeMount () {
-    console.log('post component mounted')
     if (!this.isAuthenticated) {
       this.$router.replace('login')
     }

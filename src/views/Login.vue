@@ -42,7 +42,6 @@ export default {
         }
         let request
         try {
-          console.log('a,b', 'hello')
           request = await (axios.post('http://127.0.0.1:8000/api/login', payload))
         } catch (ex) {
           console.log(ex)
