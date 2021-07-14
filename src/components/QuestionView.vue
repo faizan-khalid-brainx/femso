@@ -2,20 +2,20 @@
   <div class="container col-12" style="border-bottom: #eff0f1 1px solid">
     <div class="row mx-0 py-2">
       <div class="px-0 d-flex flex-column justify-content-center" style="width: 58px">
-        <stats :count="voteCount" :item="'votes'">
+        <stats :count="voteCount" :item="'Votes'">
         </stats>
-        <stats :count="answerCount" :item="'answers'">
+        <stats :count="answerCount" :item="'Answers'">
         </stats>
       </div>
       <div class="col">
         <h3>
-          <a :href="questionLink"> {{ questionTitle }}</a>
+          <router-link :to="questionLink"> {{ questionTitle }}</router-link>
         </h3>
         <div class="excerpt">
           {{ questionContent }}
         </div>
         <div>
-          <div class="d-flex justify-content-end action-time">asked {{ questionDate }}</div>
+          <div class="d-flex justify-content-end action-time">Asked: {{ questionDate }}</div>
           <div>
             <creator-view
               :name="name"
@@ -60,7 +60,6 @@ export default {
   font-size: 12px;
   collapse: #8b939b;
   opacity: 0.6;
-  padding-right: 5.2%;
 }
 
 .excerpt {

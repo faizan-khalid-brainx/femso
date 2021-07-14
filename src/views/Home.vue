@@ -4,21 +4,23 @@
       :title="'All Questions'">
     </question-heading>
     <div class="row">
-      <h2 id="count">{{ 0 }} questions</h2>
+      <h2 id="count">{{ questions.length }} questions</h2>
     </div>
     <div class="w-100 line-end">
     </div>
-    <question-view
-      :questionTitle="''"
-      :questionLink="''"
-      :questionContent="''"
-      :voteCount="0"
-      :answerCount="0"
-      :questionDate="''"
-      :name="''"
-      :profileLink="''"
-      :imageLink="''"
-    ></question-view>
+    <div v-for="question in questions" :key="'question' + question.id">
+      <question-view
+        :questionTitle="question.title"
+        :questionLink="'/question/' + question.id"
+        :questionContent="question.content"
+        :voteCount="question.user_votes_count"
+        :answerCount="question.answers_count"
+        :questionDate="question.created_at"
+        :name="question.user.name"
+        :profileLink="'#'"
+        imageLink="prop.jpeg"
+      ></question-view>
+    </div>
   </div>
 </template>
 
@@ -28,23 +30,33 @@
 
 import QuestionHeading from '@/components/QuestionHeading'
 import QuestionView from '@/components/QuestionView'
+import axios from 'axios'
 
 export default {
   name: 'Home',
+  async created () {
+    this.$data.questions = await this.getQuestions()
+  },
   components: {
     QuestionView,
     QuestionHeading
   },
-  props: {
-    questionTitle: String, // components for the question view component
-    questionLink: String,
-    questionContent: String,
-    voteCount: Number,
-    answerCount: Number,
-    questionDate: String,
-    name: String, // content for the profile component
-    profileLink: String,
-    imageLink: String
+  data () {
+    return {
+      questions: []
+    }
+  },
+  methods: {
+    async getQuestions () {
+      try {
+        const { data } = await axios.get('http://127.0.0.1:8000/api/show-question')
+        return data.questions
+      } catch (exception) {
+        console.error(exception.message)
+      }
+      console.log('Unable to fetch Questions')
+      return []
+    }
   }
 }
 </script>

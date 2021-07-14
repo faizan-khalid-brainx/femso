@@ -2,8 +2,6 @@
   <div v-if="isAuthenticated" id="nav">
     <router-link to="/">Home</router-link>
     |
-    <router-link to="/about">About</router-link>
-    |
     <a href="" @click.prevent="logout()">Logout</a>
   </div>
   <router-view/>
@@ -27,13 +25,17 @@ export default {
   },
   methods: {
     async logout () {
-      await axios.get('http://127.0.0.1:8000/api/logout', {
-        headers: {
-          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
-        }
-      })
-      window.localStorage.removeItem('api_token')
-      window.location = '/'
+      try {
+        await axios.get('http://127.0.0.1:8000/api/logout', {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        })
+        window.localStorage.removeItem('api_token')
+        window.location = '/' // reload is required to hide the navbar
+      } catch (error) {
+        console.error(error.message)
+      }
     }
   }
 }
@@ -90,6 +92,7 @@ html {
 #nav {
   padding: 30px;
   text-align: center;
+
   a {
     font-weight: bold;
     color: #2c3e50;

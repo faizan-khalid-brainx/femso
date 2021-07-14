@@ -40,17 +40,15 @@ export default {
           email: this.$data.email,
           password: this.$data.password
         }
-        let request
         try {
-          console.log('a,b', 'hello')
-          request = await (axios.post('http://127.0.0.1:8000/api/login', payload))
-        } catch (ex) {
-          console.log(ex)
+          const request = await (axios.post('http://127.0.0.1:8000/api/login', payload))
+          if (request.status === 200) {
+            window.localStorage.setItem('api_token', request.data.token)
+          }
+          window.location = '/' // rerender the page for navbar
+        } catch (error) {
+          console.log(error.message)
         }
-        if (request.status === 200) {
-          window.localStorage.setItem('api_token', request.data.token)
-        }
-        window.location = '/' // rerender the page for navbar
       }
     }
   }
