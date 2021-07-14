@@ -6,7 +6,7 @@
                         :link="'/question/' + question.id">
       </question-heading>
       <div class="w-100 line-end"></div>
-      <question-component v-if="question" @refresh-votes="fetchData"
+      <question-component v-if="question" @refresh-data="fetchData"
                           :body="question.content"
                           :user="question.user"
                           :vote="voteCount(question.vote)"
@@ -21,7 +21,7 @@
         <h2>{{ answers.length }} Answer</h2>
       </div>
       <div v-for="answer in answers" :key="'answer' + answer.id">
-        <question-component @refresh-votes="fetchData"
+        <question-component @refresh-data="fetchData"
                             :body="answer.content"
                             :user="answer.user"
                             :vote="voteCount(answer.vote)"
@@ -122,12 +122,11 @@ export default {
         question_id: this.$route.params.id
       }
       try {
-        const { data } = await (axios.post('http://127.0.0.1:8000/api/answer', payload, {
+        await (axios.post('http://127.0.0.1:8000/api/answer', payload, {
           headers: {
             Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
           }
         }))
-        console.log(data)
         await this.fetchData()
       } catch (error) {
         console.error(error.message)

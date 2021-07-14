@@ -86,7 +86,7 @@ export default {
             Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
           }
         }))
-        this.$emit('refreshVotes')
+        this.$emit('refreshData')
       } catch (error) {
         console.error(error.response.data.message)
       }
@@ -108,7 +108,7 @@ export default {
             Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
           }
         }))
-        this.$emit('refreshVotes')
+        this.$emit('refreshData')
       } catch (error) {
         console.error(error.response.data.message)
       }

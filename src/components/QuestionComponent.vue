@@ -2,7 +2,7 @@
   <div class="container col-12">
     <div class="row mx-0 py-2">
       <div class="px-0 d-flex flex-column justify-content-center" style="width: 58px">
-        <vote-component @refresh-votes="$emit('refreshVotes')"
+        <vote-component @refresh-data="$emit('refreshData')"
                         :votes="vote"
                         :id="id"
                         :vote-button="voteButton"
@@ -39,6 +39,7 @@
 <script>
 import VoteComponent from '@/components/VoteComponent'
 import CreatorView from '@/components/CreatorView'
+import axios from 'axios'
 
 export default {
   name: 'QuestionComponent',
@@ -77,16 +78,66 @@ export default {
       voteState: this.vote,
       edit: true,
       bodyState: this.body,
-      isOwner: false
+      isOwner: true
     }
   },
   methods: {
     saveAndExit () {
       console.log('save and exit')
+      this.editApi()
       this.edit = !this.edit
     },
     deleteAction () {
-      console.log('delete')
+      console.log('delete pressed')
+      this.deleteApi()
+    },
+    editApi () {
+      let callee = 'answer'
+      if (this.isQuestion) {
+        callee = 'question'
+      }
+      const payload = {
+        id: this.id,
+        content: this.bodyState
+      }
+      try {
+        axios.post(`http://127.0.0.1:8000/api/${callee}/edit?_method=PUT`, payload, {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        })
+        // this.$emit('refreshData')
+      } catch (error) {
+        if (error.response.status === 500) {
+          console.error('Please login again')
+        }
+        console.error(error.response.data.message)
+      }
+    },
+    async deleteApi () {
+      let callee = 'answer'
+      if (this.isQuestion) {
+        callee = 'question'
+      }
+      const payload = {
+        id: this.id
+      }
+      try {
+        await (axios.post(`http://127.0.0.1:8000/api/${callee}/delete?_method=DELETE`, payload, {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        }))
+        this.$emit('refreshData')
+        if (this.isQuestion) {
+          await this.$router.replace('/')
+        }
+      } catch (error) {
+        if (error.response.status === 500) {
+          console.error('Please login again')
+        }
+        console.error(error.response.data.message)
+      }
     },
     editAction () {
       this.edit = !this.edit
@@ -114,17 +165,20 @@ a.action {
   color: #6a737c;
   text-decoration: none;
   cursor: pointer;
+  font-size: 12px;
 }
 
-a.save{
+a.save {
   padding-top: 4px;
   text-decoration: none;
   background-color: blue;
   color: white;
   border-radius: 3px;
   cursor: pointer;
+  font-size: 12px;
 }
-a.save:hover{
+
+a.save:hover {
   background-color: darkblue;
 }
 

@@ -50,7 +50,6 @@ export default {
     }
   },
   beforeMount () {
-    console.log('question component mounted')
     if (!this.isAuthenticated) {
       this.$router.replace('login')
     }
@@ -62,12 +61,11 @@ export default {
         content: this.body
       }
       try {
-        const { data } = await (axios.post('http://127.0.0.1:8000/api/question', payload, {
+        await (axios.post('http://127.0.0.1:8000/api/question', payload, {
           headers: {
             Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
           }
         }))
-        console.log(data)
         await this.$router.replace('/')
       } catch (error) {
         console.error(error.message)
