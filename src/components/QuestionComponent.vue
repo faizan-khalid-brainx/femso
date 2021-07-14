@@ -11,17 +11,24 @@
         </vote-component>
       </div>
       <div class="col">
-        <p> {{ body }} </p>
-        <div>
-          <div class="d-flex justify-content-end action-time">
-            asked {{ questionDate }}
+        <p v-if="edit"> {{ bodyState }} </p>
+        <textarea v-else v-model="bodyState" class="editable w-100"></textarea>
+        <div class="row">
+          <div v-if="isOwner" class="col">
+            <a class="action px-1" @click.prevent="editAction" title="Opens Editor">Edit</a>
+            <a class="action px-1" @click.prevent="deleteAction" title="Deletes the post">Delete</a>
+            <a class="save px-1" v-if="!edit" @click="saveAndExit" title="Saves your edits">Save</a>
           </div>
-          <div>
-            <creator-view
-              :name="user.name"
-              :image-link="'#'"
-              :profile-link="'#'">
-            </creator-view>
+          <div class="col">
+            <div class="d-flex justify-content-end action-time">
+              asked {{ questionDate }}
+            </div>
+            <div>
+              <creator-view
+                :name="user.name"
+                :profile-link="'#'">
+              </creator-view>
+            </div>
           </div>
         </div>
       </div>
@@ -67,7 +74,23 @@ export default {
   },
   data () {
     return {
-      voteState: this.vote
+      voteState: this.vote,
+      edit: true,
+      bodyState: this.body,
+      isOwner: false
+    }
+  },
+  methods: {
+    saveAndExit () {
+      console.log('save and exit')
+      this.edit = !this.edit
+    },
+    deleteAction () {
+      console.log('delete')
+    },
+    editAction () {
+      this.edit = !this.edit
+      this.bodyState = this.body
     }
   }
 }
@@ -78,5 +101,34 @@ export default {
   font-size: 12px;
   collapse: #8b939b;
   opacity: 0.6;
+}
+
+textarea.editable {
+  resize: none;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a.action {
+  color: #6a737c;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a.save{
+  padding-top: 4px;
+  text-decoration: none;
+  background-color: blue;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+}
+a.save:hover{
+  background-color: darkblue;
+}
+
+a.action:hover {
+  color: #9fa6ad;
 }
 </style>

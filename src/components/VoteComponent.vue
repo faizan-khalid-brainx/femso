@@ -47,7 +47,7 @@ export default {
       if (this.downVoted) {
         this.downVoted = false
         this.upVoted = true
-        // REMOVE DOWNVOTE CALL AND UPVOTE
+        // REMOVE DOWNVOTE AND CALL UPVOTE
         this.update_downvote(0)
         this.update_upvote(1)
       } else {
@@ -60,7 +60,7 @@ export default {
       if (this.upVoted) {
         this.upVoted = false
         this.downVoted = true
-        // REMOVE UPVOTE
+        // REMOVE UPVOTE AND CALL DOWNVOTE
         this.update_upvote(0)
         this.update_downvote(1)
       } else {

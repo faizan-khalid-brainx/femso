@@ -31,10 +31,15 @@ export default {
             Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
           }
         })
-        window.localStorage.removeItem('api_token')
         window.location = '/' // reload is required to hide the navbar
       } catch (error) {
-        console.error(error.message)
+        if (error.response.status === 401) {
+          console.error(error.response.data.message)
+          window.localStorage.removeItem('api_token')
+          window.location = '/'
+        } else {
+          console.error(error.message)
+        }
       }
     }
   }
