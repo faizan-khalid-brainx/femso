@@ -46,8 +46,10 @@ export default {
     upVote () {
       if (this.downVoted) {
         this.downVoted = false
-        // REMOVE DOWNVOTE CALL
+        this.upVoted = true
+        // REMOVE DOWNVOTE CALL AND UPVOTE
         this.update_downvote(0)
+        this.update_upvote(1)
       } else {
         this.upVoted = !this.upVoted
         // ADD UPVOTE OR REMOVE UPVOTE
@@ -57,8 +59,10 @@ export default {
     downVote () {
       if (this.upVoted) {
         this.upVoted = false
+        this.downVoted = true
         // REMOVE UPVOTE
         this.update_upvote(0)
+        this.update_downvote(1)
       } else {
         this.downVoted = !this.downVoted
         // ADD DOWNVOTE OR REMOVE UPVOTE
@@ -84,7 +88,7 @@ export default {
         }))
         this.$emit('refreshVotes')
       } catch (error) {
-        console.error(error.message)
+        console.error(error.response.data.message)
       }
     },
     async update_downvote (update) {
@@ -106,7 +110,7 @@ export default {
         }))
         this.$emit('refreshVotes')
       } catch (error) {
-        console.error(error.message)
+        console.error(error.response.data.message)
       }
     }
   }
