@@ -32,7 +32,7 @@ export default {
           }
         })
         window.localStorage.removeItem('api_token')
-        await this.$router.replace('/')
+        window.location = '/' // reload is required to hide the navbar
       } catch (error) {
         console.error(error.message)
       }

@@ -45,7 +45,7 @@ export default {
           if (request.status === 200) {
             window.localStorage.setItem('api_token', request.data.token)
           }
-          await this.$router.replace('/') // rerender the page for navbar
+          window.location = '/' // rerender the page for navbar
         } catch (error) {
           console.log(error.message)
         }
