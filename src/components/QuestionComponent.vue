@@ -128,7 +128,6 @@ export default {
             Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
           }
         }))
-        this.$emit('refreshData')
         if (this.isQuestion) {
           await this.$router.replace('/')
         }
