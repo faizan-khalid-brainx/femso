@@ -58,6 +58,7 @@ export default {
         return { name: '' }
       }
     },
+    loginId: Number,
     vote: {
       Number,
       default: 0
@@ -77,8 +78,12 @@ export default {
     return {
       voteState: this.vote,
       edit: true,
-      bodyState: this.body,
-      isOwner: true
+      bodyState: this.body
+    }
+  },
+  computed: {
+    isOwner () {
+      return (this.loginId === this.user.id)
     }
   },
   methods: {
