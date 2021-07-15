@@ -6,7 +6,7 @@
                         :link="'/question/' + question.id">
       </question-heading>
       <div class="w-100 line-end"></div>
-      <question-component v-if="question" @refresh-votes="fetchData"
+      <question-component v-if="question" @refresh-data="fetchData"
                           :body="question.content"
                           :user="question.user"
                           :vote="voteCount(question.vote)"
@@ -14,6 +14,7 @@
                           :vote-button="question.isVoted"
                           :id="question.id"
                           :is-question="true"
+                          :login-id="loginId"
       ></question-component>
       <div class="hr"></div>
       <!-- Answer Row -->
@@ -21,13 +22,14 @@
         <h2>{{ answers.length }} Answer</h2>
       </div>
       <div v-for="answer in answers" :key="'answer' + answer.id">
-        <question-component @refresh-votes="fetchData"
+        <question-component @refresh-data="fetchData"
                             :body="answer.content"
                             :user="answer.user"
                             :vote="voteCount(answer.vote)"
                             :question-date="answer.created_at"
                             :vote-button="answer.isVoted"
                             :id="answer.id"
+                            :login-id="loginId"
         ></question-component>
         <div class="hr"></div>
         <div class="line-end"></div>
@@ -73,7 +75,8 @@ export default {
     return {
       question: undefined,
       answers: [],
-      content: ''
+      content: '',
+      loginId: null
     }
   },
   computed: {
@@ -89,6 +92,7 @@ export default {
   },
   async created () {
     await this.fetchData()
+    await this.getId()
   },
   methods: {
     voteCount (voteObject) {
@@ -96,6 +100,18 @@ export default {
         return voteObject['1'] - voteObject['0']
       } else {
         return 0
+      }
+    },
+    async getId () {
+      try {
+        const { data } = await axios.get('http://127.0.0.1:8000/api/user', {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        })
+        this.loginId = data.message
+      } catch (exception) {
+        console.log(exception.message)
       }
     },
     async getPost () {
@@ -122,12 +138,11 @@ export default {
         question_id: this.$route.params.id
       }
       try {
-        const { data } = await (axios.post('http://127.0.0.1:8000/api/answer', payload, {
+        await (axios.post('http://127.0.0.1:8000/api/answer', payload, {
           headers: {
             Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
           }
         }))
-        console.log(data)
         await this.fetchData()
       } catch (error) {
         console.error(error.message)

@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-end">
     <div id="face">
-      <a :href="profileLink"><img :src="imageLink" alt="person image"></a>
+      <a v-if="imageLink" :href="profileLink"><img :src="imageLink" alt="person image"></a>
     </div>
     <div class="px-0">
       <a :href="profileLink">{{ name }}</a>

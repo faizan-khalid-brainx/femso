@@ -47,7 +47,7 @@ export default {
           }
           window.location = '/' // rerender the page for navbar
         } catch (error) {
-          console.log(error.message)
+          console.log(error.response.data.message)
         }
       }
     }
