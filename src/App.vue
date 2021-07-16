@@ -53,7 +53,7 @@ export default {
       }
     },
     login () {
-      this.$router.push('login')
+      this.$router.push('/login')
     },
     async checkLogin () {
       try {
