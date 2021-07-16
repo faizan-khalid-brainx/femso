@@ -14,6 +14,7 @@ import axios from 'axios'
 export default {
   props: {
     votes: Number,
+    loginId: Number,
     id: {
       Number,
       required: true
@@ -44,6 +45,7 @@ export default {
       }
     },
     upVote () {
+      console.log(this.loginId)
       if (this.loginId) {
         if (this.downVoted) {
           this.downVoted = false
@@ -61,6 +63,7 @@ export default {
       }
     },
     downVote () {
+      console.log(this.loginId)
       if (this.loginId) {
         if (this.upVoted) {
           this.upVoted = false
