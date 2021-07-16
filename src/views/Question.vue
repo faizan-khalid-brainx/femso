@@ -22,7 +22,7 @@
           <p>
             Include all the information someone would need to answer your question
           </p>
-          <textarea id="body" name="body" rows="8" style="resize: none" class="w-100" v-model="body"></textarea>
+          <ckeditor :editor="editor" v-model="editorData" :confg="editorConfig"/>
           <button @click="submitForm()" class="btn btn-primary mt-3" type="button"
                   style="border-radius: 6px;letter-spacing: 2px">Publish
           </button>
@@ -33,14 +33,24 @@
 </template>
 
 <script>
+import CKEditor from '@ckeditor/ckeditor5-vue'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import axios from 'axios'
 
 export default {
   name: 'Question',
+  components: {
+    ckeditor: CKEditor.component
+  },
   data () {
     return {
-      title: '',
-      body: ''
+      editor: ClassicEditor,
+      editorData: '',
+      editorConfig: {
+        // The configuration of the editor.
+      },
+      title: ''
+      // body: ''
     }
   },
   computed: {
@@ -58,7 +68,7 @@ export default {
     async submitForm () {
       const payload = {
         title: this.title,
-        content: this.body
+        content: this.editorData
       }
       try {
         await (axios.post('http://127.0.0.1:8000/api/question', payload, {

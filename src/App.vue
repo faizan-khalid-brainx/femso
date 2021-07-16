@@ -48,6 +48,10 @@ export default {
 
 <style lang="scss">
 
+.ck-editor__editable {
+  min-height: 300px;
+}
+
 html {
   font-size: 16px;
 }

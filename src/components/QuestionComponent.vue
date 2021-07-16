@@ -11,7 +11,7 @@
         </vote-component>
       </div>
       <div class="col">
-        <p v-if="edit"> {{ bodyState }} </p>
+        <p v-if="edit" v-html="bodyState"></p>
         <textarea v-else v-model="bodyState" class="editable w-100"></textarea>
         <div class="row">
           <div v-if="isOwner" class="col">
@@ -111,7 +111,6 @@ export default {
             Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
           }
         })
-        // this.$emit('refreshData')
       } catch (error) {
         if (error.response.status === 500) {
           console.error('Please login again')

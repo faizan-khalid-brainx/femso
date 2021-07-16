@@ -12,7 +12,7 @@
       <question-view
         :questionTitle="question.title"
         :questionLink="'/question/' + question.id"
-        :questionContent="question.content"
+        :questionContent="stripText(question.content)"
         :voteCount="question.user_votes_count"
         :answerCount="question.answers_count"
         :questionDate="question.created_at"
@@ -26,7 +26,6 @@
 
 <script>
 // @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
 
 import QuestionHeading from '@/components/QuestionHeading'
 import QuestionView from '@/components/QuestionView'
@@ -56,6 +55,11 @@ export default {
       }
       console.log('Unable to fetch Questions')
       return []
+    },
+    stripText (html) {
+      const tmp = document.createElement('DIV')
+      tmp.innerHTML = html
+      return tmp.textContent || tmp.innerText || ''
     }
   }
 }
