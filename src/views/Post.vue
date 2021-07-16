@@ -80,8 +80,8 @@ export default {
     }
   },
   async created () {
-    await this.fetchData()
     await this.getId()
+    await this.fetchData()
   },
   methods: {
     voteCount (voteObject) {
@@ -104,8 +104,12 @@ export default {
       }
     },
     async getPost () {
+      let apiName = 'http://127.0.0.1:8000/api/'
+      if (!this.loginId) {
+        apiName += 'guest/'
+      }
       try {
-        const { data } = await axios.get(`http://127.0.0.1:8000/api/questionPost?id= + ${this.$route.params.id}`, {
+        const { data } = await axios.get(`${apiName}questionPost?id= + ${this.$route.params.id}`, {
           headers: {
             Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
           }
