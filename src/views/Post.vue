@@ -125,7 +125,7 @@ export default {
       }
     },
     async formSubmit () {
-      console.log('form being submitted')
+      console.log('form being submitted') // Debug code
       if (this.loginId) {
         const payload = {
           content: this.content,

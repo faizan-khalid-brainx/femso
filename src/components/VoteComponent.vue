@@ -45,7 +45,6 @@ export default {
       }
     },
     upVote () {
-      console.log(this.loginId)
       if (this.loginId) {
         if (this.downVoted) {
           this.downVoted = false
