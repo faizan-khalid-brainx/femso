@@ -44,29 +44,37 @@ export default {
       }
     },
     upVote () {
-      if (this.downVoted) {
-        this.downVoted = false
-        this.upVoted = true
-        // REMOVE DOWNVOTE AND CALL UPVOTE
-        this.update_downvote(0)
-        this.update_upvote(1)
+      if (this.loginId) {
+        if (this.downVoted) {
+          this.downVoted = false
+          this.upVoted = true
+          // REMOVE DOWNVOTE AND CALL UPVOTE
+          this.update_downvote(0)
+          this.update_upvote(1)
+        } else {
+          this.upVoted = !this.upVoted
+          // ADD UPVOTE OR REMOVE UPVOTE
+          this.update_upvote(this.upVoted)
+        }
       } else {
-        this.upVoted = !this.upVoted
-        // ADD UPVOTE OR REMOVE UPVOTE
-        this.update_upvote(this.upVoted)
+        this.$router.push('/login')
       }
     },
     downVote () {
-      if (this.upVoted) {
-        this.upVoted = false
-        this.downVoted = true
-        // REMOVE UPVOTE AND CALL DOWNVOTE
-        this.update_upvote(0)
-        this.update_downvote(1)
+      if (this.loginId) {
+        if (this.upVoted) {
+          this.upVoted = false
+          this.downVoted = true
+          // REMOVE UPVOTE AND CALL DOWNVOTE
+          this.update_upvote(0)
+          this.update_downvote(1)
+        } else {
+          this.downVoted = !this.downVoted
+          // ADD DOWNVOTE OR REMOVE UPVOTE
+          this.update_downvote(this.downVoted)
+        }
       } else {
-        this.downVoted = !this.downVoted
-        // ADD DOWNVOTE OR REMOVE UPVOTE
-        this.update_downvote(this.downVoted)
+        this.$router.push('/login')
       }
     },
     async update_upvote (update) {

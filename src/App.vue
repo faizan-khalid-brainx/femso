@@ -30,8 +30,8 @@ export default {
       return returnable == null ? 0 : 1
     }
   },
-  created () {
-    this.checkLogin()
+  async created () {
+    await this.checkLogin()
   },
   methods: {
     async logout () {

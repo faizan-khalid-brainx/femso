@@ -35,8 +35,8 @@
         <div class="line-end"></div>
       </div>
       <h2 class="py-4 ">Your Answer </h2>
-      <form @submit.prevent="formSubmit()">
-        <textarea v-model="content" class="w-100" rows="6"></textarea>
+      <form id="answerForm" @submit.prevent="formSubmit()">
+        <textarea v-model="content" class="w-100" required rows="6"></textarea>
         <button type="submit" class="mt-4 btn btn-primary">Post Your Answer</button>
       </form>
     </div>
@@ -77,17 +77,6 @@ export default {
       answers: [],
       content: '',
       loginId: null
-    }
-  },
-  computed: {
-    isAuthenticated () {
-      const returnable = window.localStorage.getItem('api_token')
-      return returnable == null ? 0 : 1
-    }
-  },
-  beforeMount () {
-    if (!this.isAuthenticated) {
-      this.$router.replace('login')
     }
   },
   async created () {
@@ -133,19 +122,23 @@ export default {
     },
     async formSubmit () {
       console.log('form being submitted')
-      const payload = {
-        content: this.content,
-        question_id: this.$route.params.id
-      }
-      try {
-        await (axios.post('http://127.0.0.1:8000/api/answer', payload, {
-          headers: {
-            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
-          }
-        }))
-        await this.fetchData()
-      } catch (error) {
-        console.error(error.message)
+      if (this.loginId) {
+        const payload = {
+          content: this.content,
+          question_id: this.$route.params.id
+        }
+        try {
+          await (axios.post('http://127.0.0.1:8000/api/answer', payload, {
+            headers: {
+              Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+            }
+          }))
+          await this.fetchData()
+        } catch (error) {
+          console.error(error.message)
+        }
+      } else {
+        this.$router.push('/login')
       }
     },
     async fetchData () {
