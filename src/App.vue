@@ -1,27 +1,37 @@
 <template>
-  <div v-if="isAuthenticated" id="nav">
+  <div id="nav">
     <router-link to="/">Home</router-link>
     |
-    <a href="" @click.prevent="logout()">Logout</a>
+    <a v-if="loginState" href="" @click.prevent="logout()">Logout</a>
+    <a v-else href="" @click.prevent="login">Login</a>
   </div>
+  <stats/>
   <router-view/>
 </template>
 
 <script>
 import axios from 'axios'
+import Stats from '@/components/Stats'
 
 export default {
   name: 'Login',
+  components: { Stats },
+  data () {
+    return {
+      loginState: {
+        Boolean,
+        default: false
+      }
+    }
+  },
   computed: {
     isAuthenticated () {
       const returnable = window.localStorage.getItem('api_token')
       return returnable == null ? 0 : 1
     }
   },
-  beforeMount () {
-    if (!this.isAuthenticated) {
-      this.$router.replace('login')
-    }
+  async created () {
+    await this.checkLogin()
   },
   methods: {
     async logout () {
@@ -37,6 +47,27 @@ export default {
           console.error(error.response.data.message)
           window.localStorage.removeItem('api_token')
           window.location = '/'
+        } else {
+          console.error(error.message)
+        }
+      }
+    },
+    login () {
+      this.$router.push('/login')
+    },
+    async checkLogin () {
+      try {
+        await (axios.get('http://127.0.0.1:8000/api/user', {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        }))
+        this.loginState = true
+      } catch (error) {
+        if (error.response.status === 401) {
+          console.error(error.response.data.message)
+          window.localStorage.removeItem('api_token')
+          this.loginState = false
         } else {
           console.error(error.message)
         }
