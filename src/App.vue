@@ -2,8 +2,11 @@
   <div id="nav">
     <router-link to="/">Home</router-link>
     |
+    <router-link to="/chat">Chat</router-link>
+    |
     <a v-if="loginState" href="" @click.prevent="logout()">Logout</a>
     <a v-else href="" @click.prevent="login">Login</a>
+
   </div>
   <stats/>
   <router-view/>
