@@ -86,20 +86,9 @@ export default {
       loginId: null
     }
   },
-  computed: {
-    isAuthenticated () {
-      const returnable = window.localStorage.getItem('api_token')
-      return returnable == null ? 0 : 1
-    }
-  },
-  beforeMount () {
-    if (!this.isAuthenticated) {
-      this.$router.replace('login')
-    }
-  },
   async created () {
-    await this.fetchData()
     await this.getId()
+    await this.fetchData()
   },
   methods: {
     voteCount (voteObject) {
@@ -122,8 +111,12 @@ export default {
       }
     },
     async getPost () {
+      let apiName = 'http://127.0.0.1:8000/api/'
+      if (!this.loginId) {
+        apiName += 'guest/'
+      }
       try {
-        const { data } = await axios.get(`http://127.0.0.1:8000/api/questionPost?id= + ${this.$route.params.id}`, {
+        const { data } = await axios.get(`${apiName}questionPost?id= + ${this.$route.params.id}`, {
           headers: {
             Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
           }
@@ -139,20 +132,24 @@ export default {
       }
     },
     async formSubmit () {
-      console.log('form being submitted')
-      const payload = {
-        content: this.editorData,
-        question_id: this.$route.params.id
-      }
-      try {
-        await (axios.post('http://127.0.0.1:8000/api/answer', payload, {
-          headers: {
-            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
-          }
-        }))
-        await this.fetchData()
-      } catch (error) {
-        console.error(error.message)
+      console.log('form being submitted') // Debug code
+      if (this.loginId) {
+        const payload = {
+          content: this.editorData,
+          question_id: this.$route.params.id
+        }
+        try {
+          await (axios.post('http://127.0.0.1:8000/api/answer', payload, {
+            headers: {
+              Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+            }
+          }))
+          await this.fetchData()
+        } catch (error) {
+          console.error(error.message)
+        }
+      } else {
+        this.$router.push('/login')
       }
     },
     async fetchData () {

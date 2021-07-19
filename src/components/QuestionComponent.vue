@@ -7,6 +7,7 @@
                         :id="id"
                         :vote-button="voteButton"
                         :is-question="isQuestion"
+                        :login-id="loginId"
         >
         </vote-component>
       </div>
