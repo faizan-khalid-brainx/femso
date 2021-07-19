@@ -9,6 +9,9 @@
     "build-watch": "vue-cli-service build-watch"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^29.0.0",
+    "@ckeditor/ckeditor5-code-block": "^29.0.0",
+    "@ckeditor/ckeditor5-vue": "^2.0.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-4",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",

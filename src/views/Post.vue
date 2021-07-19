@@ -35,8 +35,8 @@
         <div class="line-end"></div>
       </div>
       <h2 class="py-4 ">Your Answer </h2>
-      <form id="answerForm" @submit.prevent="formSubmit()">
-        <textarea v-model="content" class="w-100" required rows="6"></textarea>
+      <form @submit.prevent="formSubmit()">
+        <ckeditor :editor="editor" v-model="editorData" :confg="editorConfig"/>
         <button type="submit" class="mt-4 btn btn-primary">Post Your Answer</button>
       </form>
     </div>
@@ -64,18 +64,25 @@ textarea {
 <script>
 import QuestionHeading from '@/components/QuestionHeading'
 import QuestionComponent from '@/components/QuestionComponent'
+import CKEditor from '@ckeditor/ckeditor5-vue'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import axios from 'axios'
 
 export default {
   components: {
     QuestionComponent,
-    QuestionHeading
+    QuestionHeading,
+    ckeditor: CKEditor.component
   },
   data () {
     return {
       question: undefined,
       answers: [],
-      content: '',
+      editor: ClassicEditor,
+      editorData: '',
+      editorConfig: {
+        // The configuration of the editor.
+      },
       loginId: null
     }
   },
@@ -128,7 +135,7 @@ export default {
       console.log('form being submitted') // Debug code
       if (this.loginId) {
         const payload = {
-          content: this.content,
+          content: this.editorData,
           question_id: this.$route.params.id
         }
         try {
@@ -149,7 +156,7 @@ export default {
       const data = await this.getPost()
       this.question = data.question
       this.answers = data.answers
-      this.content = ''
+      this.editorData = '' // Clears the answer body after form submission
     }
   }
 }
