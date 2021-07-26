@@ -13,6 +13,8 @@
       <div class="row mx-0" style="height: 90.5%">
         <!--   CHAT CONTAINER     -->
         <div class="message-container px-0">
+          <chat></chat>
+          <chat></chat>
         </div>
         <!--    MESSAGE CONTAINER    -->
         <div class="d-flex flex-column flex-column-reverse col h-100  px-0">
@@ -28,8 +30,10 @@
 </template>
 
 <script>
+import Chat from '@/components/Chat'
 export default {
-  name: 'ChatLayout'
+  name: 'ChatLayout',
+  components: { Chat }
 }
 </script>
 
@@ -87,6 +91,10 @@ export default {
 .message-window{
   background-image: url("../../public/bg_img.png");
   height: 100%;
+}
+
+.chat-window-header > div {
+  border: 1px solid hsl(0, 0%, 85%);
 }
 
 </style>
