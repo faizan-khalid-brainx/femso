@@ -34,6 +34,7 @@ p{
 }
 
 .time{
+  padding: 0;
   width: fit-content;
   color: hsl(0, 0%, 64%);
 }
@@ -44,7 +45,6 @@ p{
 
 .name{
   width: fit-content;
-  /*padding-right: 2px;*/
 }
 .img-col{
   width: 77px;

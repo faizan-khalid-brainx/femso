@@ -22,6 +22,7 @@
             <textarea type="text" id="chat-input" placeholder="Type your message"></textarea>
           </div>
           <div class="d-flex flex-column flex-column-reverse message-window">
+            <text-message></text-message>
           </div>
         </div>
       </div>
@@ -31,9 +32,10 @@
 
 <script>
 import Chat from '@/components/Chat'
+import TextMessage from '@/components/TextMessage'
 export default {
   name: 'ChatLayout',
-  components: { Chat }
+  components: { TextMessage, Chat }
 }
 </script>
 
@@ -57,8 +59,7 @@ export default {
   max-width: 420px;
   height: 100%;
   content-size: border-box;
-  overflow: scroll;
-  /*background-color: hsl(210, 29%, 60%);*/
+  overflow-y: scroll;
 }
 
 .chat-background {
@@ -94,6 +95,7 @@ export default {
 .message-window{
   background-image: url("../../public/bg_img.png");
   height: 100%;
+  overflow-y: scroll;
 }
 
 .chat-window-header > div {
