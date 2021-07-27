@@ -44,7 +44,7 @@ p{
 
 .name{
   width: fit-content;
-  padding-right: 2px;
+  /*padding-right: 2px;*/
 }
 .img-col{
   width: 77px;
