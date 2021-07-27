@@ -10,7 +10,7 @@
         <div class="col h-100 px-0">
         </div>
       </div>
-      <div class="row mx-0" style="height: 90.5%">
+      <div class="row mx-0" style="height: calc(100% - 60px)">
         <!--   CHAT CONTAINER     -->
         <div class="message-container px-0">
           <chat></chat>
@@ -43,6 +43,7 @@ export default {
   margin-top: 2.5%;
   height: 82vh;
   background-color: hsl(0, 0%, 100%);
+  border: 1px solid hsl(108, 4%, 76%);
 }
 
 @media (max-width: 767px) {
