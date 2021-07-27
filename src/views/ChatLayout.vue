@@ -55,7 +55,9 @@ export default {
 .message-container {
   min-width: 380px;
   max-width: 420px;
+  height: 100%;
   content-size: border-box;
+  overflow: scroll;
   /*background-color: hsl(210, 29%, 60%);*/
 }
 
