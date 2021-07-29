@@ -5,21 +5,25 @@
     </div>
     <div class="d-flex flex-column justify-content-center info-col col">
       <div class="row m-0 name-row">
-        <p class="col" style="font-size: 17px; font-weight: 600">+92 342 1501920</p>
-        <p class="time">12:00 PM</p>
+        <p class="col" style="font-size: 17px; font-weight: 600">{{ name }}</p>
+<!--        <p class="time">12:00 PM</p>-->
       </div>
-      <div class="row m-0 message-row">
-        <p class="name">govi: </p>
-        <p class="col px-0">this is a text</p>
-        <p class="time">mut</p>
-      </div>
+<!--      <div class="row m-0 message-row">-->
+<!--        <p class="name">govi: </p>-->
+<!--        <p class="col px-0">this is a text</p>-->
+<!--        <p class="time">mut</p>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Chat'
+  name: 'Chat',
+  props: {
+    name: String,
+    threadid: Number
+  }
 }
 </script>
 

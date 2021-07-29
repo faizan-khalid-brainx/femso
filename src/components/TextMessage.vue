@@ -23,7 +23,6 @@ export default {
 
 <style scoped>
 .triangle-topright {
-  /*position: absolute;*/
   width: 0;
   height: 0;
   border-top: 13px solid white;
@@ -31,7 +30,6 @@ export default {
   display: inline-block;
 }
 .message-row{
-  /*position: absolute;*/
   display: inline-block;
   border-top:0px solid transparent ;
   background-color: white;
@@ -40,7 +38,6 @@ export default {
 
 }
 .text-window {
-  /*position: relative;*/
 }
 .name{
   font-size: 13px;
