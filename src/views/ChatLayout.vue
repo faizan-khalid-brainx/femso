@@ -26,10 +26,14 @@
             <textarea type="text" id="chat-input" placeholder="Type your message"></textarea>
           </div>
           <div class="d-flex flex-column flex-column-reverse message-window">
-            <text-message></text-message>
+            <div v-for="message in messages" :key="'message'+message.id">
+              <text-message :name="message.user.name" :message="message.content"
+                            :owner="userId===message.user.id" :time="message.sent"/>
+            </div>
           </div>
         </div>
-        <div v-else class="d-flex flex-column justify-content-center col h-100  px-0" style="border-left: 1px solid #d9d9d9">
+        <div v-else class="d-flex flex-column justify-content-center col h-100  px-0"
+             style="border-left: 1px solid #d9d9d9">
           <h3 class="text-center">Select a thread to Open Messages</h3>
         </div>
       </div>
@@ -54,6 +58,7 @@ export default {
         Boolean,
         default: false
       },
+      userId: Number,
       threads: Array,
       messages: Array,
       selectedId: null
@@ -76,7 +81,10 @@ export default {
         headers: {
           Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
         }
-      }).then(response => (this.threads = response.data.threads))
+      }).then(response => {
+        this.threads = response.data.threads
+        this.userId = response.data.user_id
+      })
         .catch(error => console.log(error.response.code))
     },
     login () {
@@ -103,14 +111,15 @@ export default {
     },
     registerThreadClick (threadId) {
       this.selectedId = threadId
+      this.fetchThreadMessages()
     },
     fetchThreadMessages () {
-      axios.get('', {
+      axios.get(`http://127.0.0.1:8000/api/thread-message/${this.selectedId}`, {
         headers: {
           Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
         }
-      }).then()
-        .catch()
+      }).then(response => (this.messages = response.data.messages))
+        .catch(error => console.log(error.response.message))
     }
   }
 }
