@@ -4,15 +4,15 @@
       <!--   Header   -->
       <div class="row mx-0 chat-window-header">
         <!--   CHAT CONTAINER     -->
-        <div class="message-container px-0">
+        <div class="thread-container px-0">
         </div>
         <!--    MESSAGE CONTAINER    -->
-        <div class="col h-100 px-0">
+        <div class="h-100 px-0 col">
         </div>
       </div>
       <div class="row mx-0" style="height: calc(100% - 60px)">
-        <!--   CHAT CONTAINER     -->
-        <div class="message-container px-0">
+<!--           CHAT CONTAINER-->
+        <div class="thread-container px-0">
           <div v-for="thread in threads" :key="'thread'+thread.id">
             <chat @click="registerThreadClick(thread.id)" :name="thread.thread_name" :threadid="thread.id"/>
           </div>
@@ -20,12 +20,13 @@
             <h5 class="text-center">No threads here, Its kind'a lonely</h5>
           </div>
         </div>
-        <!--    MESSAGE CONTAINER    -->
+<!--            MESSAGE CONTAINER-->
         <div v-if="selectedId" class="d-flex flex-column flex-column-reverse col h-100  px-0">
           <div class="text-container p-1">
-            <textarea type="text" id="chat-input" placeholder="Type your message"></textarea>
+            <textarea v-model="text" type="text" id="chat-input" placeholder="Type your message"></textarea>
+            <img @click="sendMessage" id="sendImage" src="../../public/icons8-email-send-48.png">
           </div>
-          <div class="d-flex flex-column flex-column-reverse message-window">
+          <div class="d-flex flex-column message-window">
             <div v-for="message in messages" :key="'message'+message.id">
               <text-message :name="message.user.name" :message="message.content"
                             :owner="userId===message.user.id" :time="message.sent"/>
@@ -61,7 +62,8 @@ export default {
       userId: Number,
       threads: Array,
       messages: Array,
-      selectedId: null
+      selectedId: null,
+      text: ''
     }
   },
   computed: {
@@ -120,6 +122,22 @@ export default {
         }
       }).then(response => (this.messages = response.data.messages))
         .catch(error => console.log(error.response.message))
+    },
+    sendMessage () {
+      const payload = {
+        content: this.text,
+        thread_id: this.selectedId
+      }
+      axios.post('http://127.0.0.1:8000/api/message/', payload, {
+        headers: {
+          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+        }
+      }).then(response => {
+        console.log(response.data.message)
+        this.text = ''
+        this.fetchThreadMessages()
+      })
+        .catch(error => console.log(error.response.message))
     }
   }
 }
@@ -128,24 +146,34 @@ export default {
 <style scoped>
 
 .chat-window {
-  margin-top: 2.5%;
+  min-width: 767px;
+  max-width: 75%;
+  margin: 2.5% auto;
   height: 82vh;
   background-color: hsl(0, 0%, 100%);
   border: 1px solid hsl(108, 4%, 76%);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .chat-window {
     margin-top: -1px;
   }
 }
 
-.message-container {
+.thread-container {
   min-width: 380px;
   max-width: 420px;
+  width: 100%;
   height: 100%;
+  /*display: inline-block;*/
   content-size: border-box;
   overflow-y: scroll;
+}
+
+.message-container{
+  width: calc(100% - 420px);
+  min-width: 700px;
+  /*display: inline-block;*/
 }
 
 .chat-background {
@@ -170,7 +198,7 @@ export default {
 #chat-input {
   width: 90%;
   resize: none;
-  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow: hidden; /* Hide vertical scrollbar */
   border-radius: 21px;
   border: 1px solid hsl(0, 0%, 94%);
   height: 40px;
@@ -186,6 +214,11 @@ export default {
 
 .chat-window-header > div {
   border: 1px solid hsl(0, 0%, 85%);
+}
+
+#sendImage {
+  height: 2.4em;
+  margin-bottom: 2em;
 }
 
 </style>
