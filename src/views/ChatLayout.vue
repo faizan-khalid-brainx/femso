@@ -5,6 +5,14 @@
     <div class="chat-window">
       <div class="thread-container">
         <div class="container-header"></div>
+        <div class="thread-container-body">
+          <div v-for="thread in threads" :key="'thread'+thread.id">
+            <chat @click="registerThreadClick(thread.id)" :name="thread.thread_name" :threadid="thread.id"/>
+          </div>
+          <div v-if="!threads" class="d-flex flex-column justify-content-center h-100">
+            <h5 class="text-center">No threads here, Its kind'a lonely</h5>
+          </div>
+        </div>
       </div>
       <div class="chat-container">
         <div class="container-header"></div>
@@ -15,8 +23,103 @@
 
 <script>
 
+import Chat from '@/components/Chat'
+// import TextMessage from '@/components/TextMessage'
+import axios from 'axios'
+
 export default {
-  name: 'ChatLayout'
+  name: 'ChatLayout',
+  components: {
+    // TextMessage,
+    Chat
+  },
+  data () {
+    return {
+      loginState: {
+        Boolean,
+        default: false
+      },
+      userId: Number,
+      threads: Array,
+      messages: Array,
+      selectedId: null,
+      text: ''
+    }
+  },
+  computed: {
+    isAuthenticated () {
+      const returnable = window.localStorage.getItem('api_token')
+      return returnable == null ? 0 : 1
+    }
+  },
+  async created () {
+    await this.checkLogin()
+    this.threads = null
+    this.getThreads()
+  },
+  methods: {
+    getThreads () {
+      axios.get('http://127.0.0.1:8000/api/chat', {
+        headers: {
+          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+        }
+      }).then(response => {
+        this.threads = response.data.threads
+        this.userId = response.data.user_id
+      })
+        .catch(error => console.log(error.response.code))
+    },
+    login () {
+      this.$router.push('/login')
+    },
+    async checkLogin () {
+      try {
+        await (axios.get('http://127.0.0.1:8000/api/user', {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        }))
+        this.loginState = true
+      } catch (error) {
+        if (error.response.status === 401) {
+          console.error(error.response.data.message)
+          window.localStorage.removeItem('api_token')
+          this.loginState = false
+          this.login()
+        } else {
+          console.error(error.message)
+        }
+      }
+    },
+    registerThreadClick (threadId) {
+      this.selectedId = threadId
+      this.fetchThreadMessages()
+    },
+    fetchThreadMessages () {
+      axios.get(`http://127.0.0.1:8000/api/thread-message/${this.selectedId}`, {
+        headers: {
+          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+        }
+      }).then(response => (this.messages = response.data.messages))
+        .catch(error => console.log(error.response.message))
+    },
+    sendMessage () {
+      const payload = {
+        content: this.text,
+        thread_id: this.selectedId
+      }
+      axios.post('http://127.0.0.1:8000/api/message/', payload, {
+        headers: {
+          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+        }
+      }).then(response => {
+        console.log(response.data.message)
+        this.text = ''
+        this.fetchThreadMessages()
+      })
+        .catch(error => console.log(error.response.message))
+    }
+  }
 }
 </script>
 
@@ -101,6 +204,10 @@ export default {
   background-color: hsl(0, 0%, 93%);
   height: 60px;
   width: 100%;
+}
+
+.thread-container-body{
+  height: calc(100% - 60px);
 }
 
 </style>
