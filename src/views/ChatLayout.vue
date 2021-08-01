@@ -3,8 +3,12 @@
     <div class="bg-color">
     </div>
     <div class="chat-window">
-      <div class="thread-container"></div>
-      <div class="chat-container"></div>
+      <div class="thread-container">
+        <div class="container-header"></div>
+      </div>
+      <div class="chat-container">
+        <div class="container-header"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -42,12 +46,14 @@ export default {
 
 .thread-container{
   height: 100%;
-  background-color: hsl(27, 74%, 50%);
+  /*background-color: hsl(27, 74%, 50%);*/
+  border-right: 1px solid hsl(0, 0%, 85%);
 }
 
 .chat-container{
   height: 100%;
-  background-color: hsl(210, 8%, 45%);
+  border-right: 1px solid hsl(0, 0%, 85%);
+  /*background-color: hsl(210, 8%, 45%);*/
 }
 
 @media screen and (max-width: 1440px) and (min-width: 1301px) {
@@ -89,6 +95,12 @@ export default {
     height: 100%;
     margin: 0;
   }
+}
+
+.container-header{
+  background-color: hsl(0, 0%, 93%);
+  height: 60px;
+  width: 100%;
 }
 
 </style>
