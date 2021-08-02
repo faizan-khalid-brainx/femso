@@ -5,7 +5,7 @@
     <div class="chat-window">
       <div class="thread-container">
         <div class="container-header"></div>
-        <div class="thread-container-body">
+        <div class="container-body">
           <div v-for="thread in threads" :key="'thread'+thread.id">
             <chat @click="registerThreadClick(thread.id)" :name="thread.thread_name" :threadid="thread.id"/>
           </div>
@@ -16,6 +16,26 @@
       </div>
       <div class="chat-container">
         <div class="container-header"></div>
+        <div class="container-body">
+<!--          asd-->
+          <div v-if="selectedId" class="d-flex flex-column flex-column-reverse overflow-hidden col h-100  px-0">
+            <div class="text-container p-1">
+              <textarea @keypress.enter.prevent="sendMessage" v-model="text" type="text" id="chat-input" placeholder="Type your message"></textarea>
+              <img @click="sendMessage" id="sendImage" src="../../public/icons8-email-send-48.png">
+            </div>
+            <div class="message-window">
+              <div v-for="message in messages" :key="'message'+message.id">
+                <text-message :name="message.user.name" :message="message.content"
+                              :owner="userId===message.user.id" :time="message.sent"/>
+              </div>
+            </div>
+          </div>
+          <div v-else class="d-flex flex-column justify-content-center col h-100  px-0"
+               style="border-left: 1px solid #d9d9d9">
+            <h3 class="text-center">Select a thread to Open Messages</h3>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
@@ -24,13 +44,13 @@
 <script>
 
 import Chat from '@/components/Chat'
-// import TextMessage from '@/components/TextMessage'
+import TextMessage from '@/components/TextMessage'
 import axios from 'axios'
 
 export default {
   name: 'ChatLayout',
   components: {
-    // TextMessage,
+    TextMessage,
     Chat
   },
   data () {
@@ -206,8 +226,38 @@ export default {
   width: 100%;
 }
 
-.thread-container-body{
+.container-body{
   height: calc(100% - 60px);
+}
+
+.text-container {
+  height: 62px;
+  background-color: hsl(0, 0%, 94%);
+}
+
+#chat-input {
+  font-size: 14px;
+  width: calc(100% - 60px);
+  resize: none;
+  overflow: hidden; /* Hide vertical scrollbar */
+  border-radius: 21px;
+  border: 1px solid hsl(0, 0%, 94%);
+  height: 40px;
+  margin: 5px 10px;
+  padding: 9px 12px 11px;
+}
+
+#sendImage {
+  width: 32px;
+  margin-bottom: 28px;
+}
+
+.message-window{
+  display: flex;
+  flex-direction: column;
+  background-image: url("../../public/bg_img.png");
+  height: calc(100% - 62px);
+  overflow-y: scroll;
 }
 
 </style>
