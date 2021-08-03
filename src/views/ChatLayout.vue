@@ -4,14 +4,50 @@
     </div>
     <div class="chat-window">
       <div class="thread-container">
-        <div class="container-header"></div>
-        <div class="container-body scrollable-y">
-          <div v-for="thread in threads" :key="'thread'+thread.id">
-            <chat @click="registerThreadClick(thread.id)" :name="thread.thread_name"
-                  :threadid="thread.id" :selected="selectedId"/>
+        <div id="addgroup" class="parent-height">
+          <div class="newChat-header">
+            <div class="d-flex justify-content-center w-100 h-75 p-3">
+              <h4 id="donebtn" class="btn">Done</h4>
+            </div>
+            <div class="h-25 row mx-0">
+              <img id="backArrow" src="../../public/icons8-left-arrow-64.png">
+              <h5>Add Group Participants</h5>
+            </div>
           </div>
-          <div v-if="!threads" class="d-flex flex-column justify-content-center h-100">
-            <h5 class="text-center">No threads here, Its kinda lonely</h5>
+          <div class="newChat-body scrollable-y">
+            <div id="nameContainer" style="height: 40%" class="scrollable-y">
+<!--              <p class="row m-0 px-5">bro</p>-->
+            </div>
+            <div id="" style="height: 60%" class="scrollable-y">
+<!--                <chat name="asdfa"/>-->
+            </div>
+          </div>
+        </div>
+        <div id="newchat" class="parent-height d-none">
+          <div class="newChat-header">
+            <div class="d-flex justify-content-center w-100 h-75 p-3">
+            </div>
+            <div class="h-25 row mx-0">
+              <img id="backArrow" src="../../public/icons8-left-arrow-64.png">
+              <h5>New Thread</h5>
+            </div>
+          </div>
+          <div class="newChat-body scrollable-y">
+              <chat style="background-color: whitesmoke" name="New Group"/>
+          </div>
+        </div>
+        <div id="threadview" class="parent-height d-none">
+          <div class="container-header">
+            <img id="newMessage" title="Create a Thread" src="../../public/chat.png">
+          </div>
+          <div class="container-body scrollable-y">
+            <div v-for="thread in threads" :key="'thread'+thread.id">
+              <chat title="Open Thread" @click="registerThreadClick(thread.id)" :name="thread.thread_name"
+                    :threadid="thread.id" :selected="selectedId"/>
+            </div>
+            <div v-if="!threads" class="d-flex flex-column justify-content-center h-100">
+              <h5 class="text-center">No threads here, Its kinda lonely</h5>
+            </div>
           </div>
         </div>
       </div>
@@ -22,7 +58,7 @@
           <div v-if="selectedId" class="d-flex flex-column-reverse col h-100  px-0">
             <div class="text-container p-1">
               <textarea @keypress.enter.prevent="sendMessage" v-model="text" type="text" id="chat-input" placeholder="Type your message"></textarea>
-              <img @click="sendMessage" id="sendImage" src="../../public/icons8-email-send-48.png" alt="Send Button">
+              <img @click="sendMessage" id="sendImage" title="Send" src="../../public/icons8-email-send-48.png" alt="Send Button">
             </div>
             <div class="message-window">
               <template v-for="message in messages" :key="'message'+message.id">
@@ -272,6 +308,50 @@ export default {
 /* which was breaking the scrolling functionality */
 .message-window > :first-child {
   margin-top: auto !important;
+}
+
+#newMessage{
+  width: 32px;
+  margin-top: 14px;
+  margin-right: 16px;
+  float: right;
+}
+
+.newChat-header {
+  background-color: hsl(172, 100%, 37%);
+  height: 120px;
+}
+
+.newChat-body {
+  height: calc(100% - 120px);
+}
+
+#donebtn{
+  background-color: hsl(143, 93%, 47%);
+  height: 60px;
+  padding-top: 15px;
+  color: white;
+  font-size: 20px;
+  border-radius: 50%;
+}
+
+.newChat-header  h5{
+  width: max-content;
+  font-size: 18px;
+  text-align: center;
+  margin: 0;
+  color: white;
+}
+#backArrow{
+  padding-left: 30px;
+  padding-right: 30px;
+  /*display: inline-block;*/
+  height: 100%;
+  width: auto;
+}
+
+.parent-height{
+  height: inherit;
 }
 
 </style>
