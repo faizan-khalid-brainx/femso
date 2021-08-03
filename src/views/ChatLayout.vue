@@ -7,7 +7,8 @@
         <div class="container-header"></div>
         <div class="container-body">
           <div v-for="thread in threads" :key="'thread'+thread.id">
-            <chat @click="registerThreadClick(thread.id)" :name="thread.thread_name" :threadid="thread.id"/>
+            <chat @click="registerThreadClick(thread.id)" :name="thread.thread_name"
+                  :threadid="thread.id" :selected="selectedId"/>
           </div>
           <div v-if="!threads" class="d-flex flex-column justify-content-center h-100">
             <h5 class="text-center">No threads here, Its kinda lonely</h5>
@@ -169,14 +170,12 @@ export default {
 
 .thread-container{
   height: 100%;
-  /*background-color: hsl(27, 74%, 50%);*/
   border-right: 1px solid hsl(0, 0%, 85%);
 }
 
 .chat-container{
   height: 100%;
   border-right: 1px solid hsl(0, 0%, 85%);
-  /*background-color: hsl(210, 8%, 45%);*/
 }
 
 @media screen and (max-width: 1440px) and (min-width: 1301px) {
@@ -228,6 +227,7 @@ export default {
 
 .container-body{
   height: calc(100% - 60px);
+  border-top: 1px solid hsl(0, 0%, 86%);
 }
 
 .text-container {

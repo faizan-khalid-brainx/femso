@@ -1,5 +1,5 @@
 <template>
-  <div class="row m-0 col chat">
+    <div :class="chatSelection">
     <div class="img-col">
       <img src="../../public/no-profile-picture-icon-24.webp">
     </div>
@@ -22,7 +22,13 @@ export default {
   name: 'Chat',
   props: {
     name: String,
-    threadid: Number
+    threadid: Number,
+    selected: Number
+  },
+  computed: {
+    chatSelection () {
+      return (this.threadid === this.selected) ? 'row m-0 col chat chat-selection' : 'row m-0 col chat'
+    }
   }
 }
 </script>
@@ -45,6 +51,10 @@ p{
 
 .chat{
   height: 72px;
+}
+
+.chat-selection{
+  background-color: hsl(0, 0%, 92%);
 }
 
 .name{
