@@ -5,7 +5,7 @@
     <div class="chat-window">
       <div class="thread-container">
         <div class="container-header"></div>
-        <div class="container-body">
+        <div class="container-body scrollable-y">
           <div v-for="thread in threads" :key="'thread'+thread.id">
             <chat @click="registerThreadClick(thread.id)" :name="thread.thread_name"
                   :threadid="thread.id" :selected="selectedId"/>
@@ -19,7 +19,7 @@
         <div class="container-header"></div>
         <div class="container-body">
           <!--     BODY CONTENT     -->
-          <div v-if="selectedId" class="d-flex flex-column-reverse overflow-hidden col h-100  px-0">
+          <div v-if="selectedId" class="d-flex flex-column-reverse col h-100  px-0">
             <div class="text-container p-1">
               <textarea @keypress.enter.prevent="sendMessage" v-model="text" type="text" id="chat-input" placeholder="Type your message"></textarea>
               <img @click="sendMessage" id="sendImage" src="../../public/icons8-email-send-48.png" alt="Send Button">
@@ -153,19 +153,19 @@ export default {
 
 .bg-color {
   background-color: hsl(153, 47%, 49%);
-  height: 12%;
+  height: 12vh;
   padding: 1px;
 }
 
 .chat-window {
   display: grid;
   grid-template-columns: 30% 70%;
+  grid-auto-rows: calc(82vh - 1px);
   width: 1400px;
   min-height: 460px;
-  height: calc(82vh - 1px);
   border: 1px solid hsl(108, 4%, 76%);
   background: hsl(0, 0%, 100%);
-  margin: -4% auto 0;
+  margin: -8vh auto 0;
 }
 
 .thread-container{
@@ -190,7 +190,8 @@ export default {
 
   .chat-window {
     width: 100%;
-    height: 100%;
+    height: inherit;
+    grid-auto-rows: minmax(460px,87vh);
     margin: 0;
   }
 }
@@ -202,7 +203,8 @@ export default {
   .chat-window{
     grid-template-columns: 32% 68%;
     width: 100%;
-    height: 100%;
+    height: inherit;
+    grid-auto-rows: minmax(460px,87vh);
     margin: 0;
   }
 }
@@ -214,7 +216,8 @@ export default {
   .chat-window{
     grid-template-columns: minmax(300px,40%) minmax(348px,60%);
     width: 100%;
-    height: 100%;
+    height: inherit;
+    grid-auto-rows: minmax(460px,87vh);
     margin: 0;
   }
 }
@@ -230,6 +233,10 @@ export default {
   border-top: 1px solid hsl(0, 0%, 86%);
 }
 
+.scrollable-y{
+  overflow-y: auto;
+}
+
 .text-container {
   height: 62px;
   background-color: hsl(0, 0%, 94%);
@@ -239,7 +246,7 @@ export default {
   font-size: 14px;
   width: calc(100% - 60px);
   resize: none;
-  overflow: hidden; /* Hide vertical scrollbar */
+  overflow-x: auto;
   border-radius: 21px;
   border: 1px solid hsl(0, 0%, 94%);
   height: 40px;
@@ -249,16 +256,22 @@ export default {
 
 #sendImage {
   width: 32px;
-  margin-bottom: 28px;
+  margin-top: 14px;
+  margin-right: 8px;
+  float: right;
 }
 
 .message-window{
   display: flex;
   flex-direction: column;
-  justify-content: end;
   background-image: url("../../public/bg_img.png");
   height: calc(100% - 62px);
-  overflow-y: scroll;
+  overflow-y: auto;
+}
+/* below is alternative to justify content end */
+/* which was breaking the scrolling functionality */
+.message-window > :first-child {
+  margin-top: auto !important;
 }
 
 </style>
