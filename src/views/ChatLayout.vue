@@ -10,7 +10,7 @@
             <chat @click="registerThreadClick(thread.id)" :name="thread.thread_name" :threadid="thread.id"/>
           </div>
           <div v-if="!threads" class="d-flex flex-column justify-content-center h-100">
-            <h5 class="text-center">No threads here, Its kind'a lonely</h5>
+            <h5 class="text-center">No threads here, Its kinda lonely</h5>
           </div>
         </div>
       </div>
@@ -19,16 +19,15 @@
         <div class="container-body">
           <!--     BODY CONTENT     -->
           <div v-if="selectedId" class="d-flex flex-column-reverse overflow-hidden col h-100  px-0">
-          <div v-if="selectedId" class="d-flex flex-column-reverse overflow-hidden col h-100  px-0">
             <div class="text-container p-1">
               <textarea @keypress.enter.prevent="sendMessage" v-model="text" type="text" id="chat-input" placeholder="Type your message"></textarea>
-              <img @click="sendMessage" id="sendImage" src="../../public/icons8-email-send-48.png">
+              <img @click="sendMessage" id="sendImage" src="../../public/icons8-email-send-48.png" alt="Send Button">
             </div>
             <div class="message-window">
-              <div v-for="message in messages" :key="'message'+message.id">
+              <template v-for="message in messages" :key="'message'+message.id">
                 <text-message :name="message.user.name" :message="message.content"
                               :owner="userId===message.user.id" :time="message.sent"/>
-              </div>
+              </template>
             </div>
           </div>
           <div v-else class="d-flex flex-column justify-content-center col h-100  px-0"
@@ -165,7 +164,7 @@ export default {
   height: calc(82vh - 1px);
   border: 1px solid hsl(108, 4%, 76%);
   background: hsl(0, 0%, 100%);
-  margin: -4% auto 0%;
+  margin: -4% auto 0;
 }
 
 .thread-container{

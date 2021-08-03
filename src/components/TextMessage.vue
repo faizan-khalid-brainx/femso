@@ -1,7 +1,7 @@
 <template>
-  <div v-if="name" class="text-window">
+  <div v-if="name" :class="ownerWindow">
     <div v-if="!owner" class="triangle-topright"></div>
-    <div :class="classAssign">
+    <div :class="ownerTextContainer">
       <div class="row mx-0">
         <span class="name" style="color: hsl(250,50%,50%)">{{ name }}</span>
       </div>
@@ -29,8 +29,11 @@ export default {
     }
   },
   computed: {
-    classAssign () {
+    ownerTextContainer () {
       return (this.owner) ? 'message-row own' : 'message-row'
+    },
+    ownerWindow () {
+      return (this.owner) ? 'text-window right' : 'text-window'
     }
   }
 }
@@ -74,6 +77,10 @@ export default {
 
 .own {
   background-color: hsl(94, 78%, 87%);
+}
+
+.right{
+  align-self: end;
 }
 
 .time {
