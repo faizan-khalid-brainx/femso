@@ -19,6 +19,7 @@
         <div class="container-body">
           <!--     BODY CONTENT     -->
           <div v-if="selectedId" class="d-flex flex-column-reverse overflow-hidden col h-100  px-0">
+          <div v-if="selectedId" class="d-flex flex-column-reverse overflow-hidden col h-100  px-0">
             <div class="text-container p-1">
               <textarea @keypress.enter.prevent="sendMessage" v-model="text" type="text" id="chat-input" placeholder="Type your message"></textarea>
               <img @click="sendMessage" id="sendImage" src="../../public/icons8-email-send-48.png">
@@ -255,6 +256,7 @@ export default {
 .message-window{
   display: flex;
   flex-direction: column;
+  justify-content: end;
   background-image: url("../../public/bg_img.png");
   height: calc(100% - 62px);
   overflow-y: scroll;
