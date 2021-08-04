@@ -7,7 +7,7 @@
         <div id="addgroup" :class="{ 'd-none': addGroup, 'parent-height':true}">
           <div class="newChat-header">
             <div class="d-flex justify-content-center w-100 h-75 p-3">
-              <h4 id="donebtn" class="btn">Done</h4>
+              <h4 @click="groupToConversation" id="donebtn" class="btn">Done</h4>
             </div>
             <div class="h-25 row mx-0">
               <img @click="gotoMakeConversation" id="backArrow"
@@ -17,6 +17,7 @@
           </div>
           <div class="newChat-body scrollable-y">
             <div id="nameContainer" style="height: 40%" class="scrollable-y">
+              <input v-model="groupName" class="row m-0 px-5 w-100" placeholder="Group Name">
               <template v-for="grp in group" :key="'group'+grp">
                 <p class="row m-0 px-5">{{ users[grp].name }}</p>
               </template>
@@ -119,7 +120,8 @@ export default {
       newChat: true,
       threadView: false,
       users: [],
-      group: []
+      group: [],
+      groupName: ''
     }
   },
   computed: {
@@ -159,6 +161,27 @@ export default {
       }
       return null
     },
+    async fetchGroupThread () {
+      try {
+        const participant = []
+        for (const grp in this.group) {
+          participant.push(this.users[grp].id)
+        }
+        const payload = {
+          participants: participant,
+          groupName: this.groupName
+        }
+        const { data } = await (axios.post('http://127.0.0.1:8000/api/chat/group', payload, {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        }))
+        return data.threadId
+      } catch (error) {
+        console.error(error.message)
+      }
+      return null
+    },
     async checkLogin () {
       try {
         await (axios.get('http://127.0.0.1:8000/api/user', {
@@ -172,7 +195,7 @@ export default {
           console.error(error.response.data.message)
           window.localStorage.removeItem('api_token')
           this.loginState = false
-          this.$router.push('/login')
+          await this.$router.push('/login')
         } else {
           console.error(error.message)
         }
@@ -221,7 +244,15 @@ export default {
     },
     async gotoConversation (id) {
       this.selectedId = await this.fetchThread(id)
+      this.fetchThreadMessages()
       this.getThreads();
+      [this.addGroup, this.newChat, this.threadView] = [1, 1, 0]
+    },
+    async groupToConversation () {
+      this.selectedId = await this.fetchGroupThread()
+      this.fetchThreadMessages()
+      this.getThreads();
+      [this.group, this.groupName] = [[], ''];
       [this.addGroup, this.newChat, this.threadView] = [1, 1, 0]
     },
     // Courtesy of dev.to Blog
