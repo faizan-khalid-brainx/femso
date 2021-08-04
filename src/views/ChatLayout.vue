@@ -4,13 +4,14 @@
     </div>
     <div class="chat-window">
       <div class="thread-container">
-        <div id="addgroup" class="parent-height">
+        <div id="addgroup" :class="{ 'd-none': addGroup, 'parent-height':true}">
           <div class="newChat-header">
             <div class="d-flex justify-content-center w-100 h-75 p-3">
               <h4 id="donebtn" class="btn">Done</h4>
             </div>
             <div class="h-25 row mx-0">
-              <img id="backArrow" src="../../public/icons8-left-arrow-64.png">
+              <img @click="[addGroup,newChat,threadView]=[1,0,1]" id="backArrow"
+                   title="back" src="../../public/icons8-left-arrow-64.png">
               <h5>Add Group Participants</h5>
             </div>
           </div>
@@ -23,22 +24,24 @@
             </div>
           </div>
         </div>
-        <div id="newchat" class="parent-height d-none">
+        <div id="newchat" :class="{ 'd-none': newChat, 'parent-height':true}">
           <div class="newChat-header">
             <div class="d-flex justify-content-center w-100 h-75 p-3">
             </div>
             <div class="h-25 row mx-0">
-              <img id="backArrow" src="../../public/icons8-left-arrow-64.png">
+              <img @click="[addGroup,newChat,threadView]=[1,1,0]"
+                   title="back" id="backArrow" src="../../public/icons8-left-arrow-64.png">
               <h5>New Thread</h5>
             </div>
           </div>
           <div class="newChat-body scrollable-y">
-              <chat style="background-color: whitesmoke" name="New Group"/>
+              <chat @click="[addGroup,newChat,threadView]=[0,1,1]"
+                    title="Create a Group Thread" style="background-color: whitesmoke" name="New Group"/>
           </div>
         </div>
-        <div id="threadview" class="parent-height d-none">
+        <div id="threadview" :class="{ 'd-none': threadView, 'parent-height':true}">
           <div class="container-header">
-            <img id="newMessage" title="Create a Thread" src="../../public/chat.png">
+            <img @click="[addGroup,newChat,threadView]=[1,0,1]" id="newMessage" title="Create a Thread" src="../../public/chat.png">
           </div>
           <div class="container-body scrollable-y">
             <div v-for="thread in threads" :key="'thread'+thread.id">
@@ -100,7 +103,10 @@ export default {
       threads: Array,
       messages: Array,
       selectedId: null,
-      text: ''
+      text: '',
+      addGroup: true,
+      newChat: true,
+      threadView: false
     }
   },
   computed: {
