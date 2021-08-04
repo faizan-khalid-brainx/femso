@@ -17,7 +17,7 @@
           </div>
           <div class="newChat-body scrollable-y">
             <div id="nameContainer" style="height: 40%" class="scrollable-y">
-<!--              <p class="row m-0 px-5">bro</p>-->
+              <!--              <p class="row m-0 px-5">bro</p>-->
             </div>
             <div id="" style="height: 60%" class="scrollable-y">
               <template v-for="user in users" :key="'user'+user.id">
@@ -37,17 +37,18 @@
             </div>
           </div>
           <div class="newChat-body scrollable-y">
-              <chat @click="[addGroup,newChat,threadView]=[0,1,1]"
-                    title="Create a Group Thread" style="background-color: whitesmoke"
-                    name="New Group"/>
+            <chat @click="[addGroup,newChat,threadView]=[0,1,1]"
+                  title="Create a Group Thread" style="background-color: whitesmoke"
+                  name="New Group"/>
             <template v-for="user in users" :key="'user'+user.id">
-              <chat :id="user.id" :name="user.name"/>
+              <chat @click="gotoConversation(user.id)" :id="user.id" :name="user.name"/>
             </template>
           </div>
         </div>
         <div id="threadview" :class="{ 'd-none': threadView, 'parent-height':true}">
           <div class="container-header">
-            <img @click="[addGroup,newChat,threadView]=[1,0,1]" id="newMessage" title="Create a Thread" src="../../public/chat.png">
+            <img @click="[addGroup,newChat,threadView]=[1,0,1]" id="newMessage" title="Create a Thread"
+                 src="../../public/chat.png">
           </div>
           <div class="container-body scrollable-y">
             <div v-for="thread in threads" :key="'thread'+thread.id">
@@ -66,8 +67,10 @@
           <!--     BODY CONTENT     -->
           <div v-if="selectedId" class="d-flex flex-column-reverse col h-100  px-0">
             <div class="text-container p-1">
-              <textarea @keypress.enter.prevent="sendMessage" v-model="text" type="text" id="chat-input" placeholder="Type your message"></textarea>
-              <img @click="sendMessage" id="sendImage" title="Send" src="../../public/icons8-email-send-48.png" alt="Send Button">
+              <textarea @keypress.enter.prevent="sendMessage" v-model="text" type="text" id="chat-input"
+                        placeholder="Type your message"></textarea>
+              <img @click="sendMessage" id="sendImage" title="Send" src="../../public/icons8-email-send-48.png"
+                   alt="Send Button">
             </div>
             <div class="message-window">
               <template v-for="message in messages" :key="'message'+message.id">
@@ -140,8 +143,23 @@ export default {
       })
         .catch(error => console.log(error.response.code))
     },
-    login () {
-      this.$router.push('/login')
+    async fetchThread ($userid) {
+      try {
+        const { data } = await (axios.get(`http://127.0.0.1:8000/api/chat/${$userid}`, {
+          headers: {
+            Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+          }
+        }))
+        return data.threadId
+      } catch (error) {
+        console.error(error.message)
+      }
+      return null
+    },
+    async gotoConversation (id) {
+      this.selectedId = await this.fetchThread(id)
+      this.getThreads();
+      [this.addGroup, this.newChat, this.threadView] = [1, 1, 0]
     },
     async checkLogin () {
       try {
@@ -156,7 +174,7 @@ export default {
           console.error(error.response.data.message)
           window.localStorage.removeItem('api_token')
           this.loginState = false
-          this.login()
+          this.$router.push('/login')
         } else {
           console.error(error.message)
         }
@@ -227,12 +245,12 @@ export default {
   margin: -8vh auto 0;
 }
 
-.thread-container{
+.thread-container {
   height: 100%;
   border-right: 1px solid hsl(0, 0%, 85%);
 }
 
-.chat-container{
+.chat-container {
   height: 100%;
   border-right: 1px solid hsl(0, 0%, 85%);
 }
@@ -250,7 +268,7 @@ export default {
   .chat-window {
     width: 100%;
     height: inherit;
-    grid-auto-rows: minmax(460px,87vh);
+    grid-auto-rows: minmax(460px, 87vh);
     margin: 0;
   }
 }
@@ -259,11 +277,12 @@ export default {
   .bg-color {
     display: none;
   }
-  .chat-window{
+
+  .chat-window {
     grid-template-columns: 32% 68%;
     width: 100%;
     height: inherit;
-    grid-auto-rows: minmax(460px,87vh);
+    grid-auto-rows: minmax(460px, 87vh);
     margin: 0;
   }
 }
@@ -272,27 +291,28 @@ export default {
   .bg-color {
     display: none;
   }
-  .chat-window{
-    grid-template-columns: minmax(300px,40%) minmax(348px,60%);
+
+  .chat-window {
+    grid-template-columns: minmax(300px, 40%) minmax(348px, 60%);
     width: 100%;
     height: inherit;
-    grid-auto-rows: minmax(460px,87vh);
+    grid-auto-rows: minmax(460px, 87vh);
     margin: 0;
   }
 }
 
-.container-header{
+.container-header {
   background-color: hsl(0, 0%, 93%);
   height: 60px;
   width: 100%;
 }
 
-.container-body{
+.container-body {
   height: calc(100% - 60px);
   border-top: 1px solid hsl(0, 0%, 86%);
 }
 
-.scrollable-y{
+.scrollable-y {
   overflow-y: auto;
 }
 
@@ -320,20 +340,21 @@ export default {
   float: right;
 }
 
-.message-window{
+.message-window {
   display: flex;
   flex-direction: column;
   background-image: url("../../public/bg_img.png");
   height: calc(100% - 62px);
   overflow-y: auto;
 }
+
 /* below is alternative to justify content end */
 /* which was breaking the scrolling functionality */
 .message-window > :first-child {
   margin-top: auto !important;
 }
 
-#newMessage{
+#newMessage {
   width: 32px;
   margin-top: 14px;
   margin-right: 16px;
@@ -349,7 +370,7 @@ export default {
   height: calc(100% - 120px);
 }
 
-#donebtn{
+#donebtn {
   background-color: hsl(143, 93%, 47%);
   height: 60px;
   padding-top: 15px;
@@ -358,14 +379,15 @@ export default {
   border-radius: 50%;
 }
 
-.newChat-header  h5{
+.newChat-header h5 {
   width: max-content;
   font-size: 18px;
   text-align: center;
   margin: 0;
   color: white;
 }
-#backArrow{
+
+#backArrow {
   padding-left: 30px;
   padding-right: 30px;
   /*display: inline-block;*/
@@ -373,7 +395,7 @@ export default {
   width: auto;
 }
 
-.parent-height{
+.parent-height {
   height: inherit;
 }
 
