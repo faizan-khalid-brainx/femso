@@ -61,6 +61,9 @@
             <div v-if="!threads" class="d-flex flex-column justify-content-center h-100">
               <h5 class="text-center">No threads here, Its kinda lonely</h5>
             </div>
+            <div v-else-if="!threads.length" class="d-flex flex-column justify-content-center h-100">
+              <h5 class="text-center">No threads here, Its kinda lonely</h5>
+            </div>
           </div>
         </div>
       </div>
