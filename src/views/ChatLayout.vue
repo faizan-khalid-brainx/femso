@@ -10,18 +10,20 @@
               <h4 id="donebtn" class="btn">Done</h4>
             </div>
             <div class="h-25 row mx-0">
-              <img @click="[addGroup,newChat,threadView]=[1,0,1]" id="backArrow"
+              <img @click="gotoMakeConversation" id="backArrow"
                    title="back" src="../../public/icons8-left-arrow-64.png">
               <h5>Add Group Participants</h5>
             </div>
           </div>
           <div class="newChat-body scrollable-y">
             <div id="nameContainer" style="height: 40%" class="scrollable-y">
-              <!--              <p class="row m-0 px-5">bro</p>-->
+              <template v-for="grp in group" :key="'group'+grp">
+                <p class="row m-0 px-5">{{ users[grp].name }}</p>
+              </template>
             </div>
             <div id="" style="height: 60%" class="scrollable-y">
-              <template v-for="user in users" :key="'user'+user.id">
-                <chat :id="user.id" :name="user.name"/>
+              <template v-for="(user,index) in users" :key="'user'+user.id">
+                <chat @click="group = toggle(group,index)" :id="user.id" :name="user.name"/>
               </template>
             </div>
           </div>
@@ -116,7 +118,8 @@ export default {
       addGroup: true,
       newChat: true,
       threadView: false,
-      users: []
+      users: [],
+      group: []
     }
   },
   computed: {
@@ -156,11 +159,6 @@ export default {
       }
       return null
     },
-    async gotoConversation (id) {
-      this.selectedId = await this.fetchThread(id)
-      this.getThreads();
-      [this.addGroup, this.newChat, this.threadView] = [1, 1, 0]
-    },
     async checkLogin () {
       try {
         await (axios.get('http://127.0.0.1:8000/api/user', {
@@ -179,10 +177,6 @@ export default {
           console.error(error.message)
         }
       }
-    },
-    registerThreadClick (threadId) {
-      this.selectedId = threadId
-      this.fetchThreadMessages()
     },
     fetchUser () {
       axios.get('http://127.0.0.1:8000/api/users/all', {
@@ -216,7 +210,32 @@ export default {
         this.fetchThreadMessages()
       })
         .catch(error => console.log(error.response.message))
+    },
+    registerThreadClick (threadId) {
+      this.selectedId = threadId
+      this.fetchThreadMessages()
+    },
+    gotoMakeConversation () {
+      this.group = [];
+      [this.addGroup, this.newChat, this.threadView] = [1, 0, 1]
+    },
+    async gotoConversation (id) {
+      this.selectedId = await this.fetchThread(id)
+      this.getThreads();
+      [this.addGroup, this.newChat, this.threadView] = [1, 1, 0]
+    },
+    // Courtesy of dev.to Blog
+    removeAtIndex (arr, index) {
+      const copy = [...arr]
+      copy.splice(index, 1)
+      return copy
+    },
+    toggle (arr, item, getValue = item => item) {
+      const index = arr.findIndex(i => getValue(i) === getValue(item))
+      if (index === -1) return [...arr, item]
+      return this.removeAtIndex(arr, index)
     }
+    // courtesy ends here :p
   }
 }
 </script>
