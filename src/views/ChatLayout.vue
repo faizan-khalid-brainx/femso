@@ -20,7 +20,9 @@
 <!--              <p class="row m-0 px-5">bro</p>-->
             </div>
             <div id="" style="height: 60%" class="scrollable-y">
-<!--                <chat name="asdfa"/>-->
+              <template v-for="user in users" :key="'user'+user.id">
+                <chat :id="user.id" :name="user.name"/>
+              </template>
             </div>
           </div>
         </div>
@@ -36,7 +38,11 @@
           </div>
           <div class="newChat-body scrollable-y">
               <chat @click="[addGroup,newChat,threadView]=[0,1,1]"
-                    title="Create a Group Thread" style="background-color: whitesmoke" name="New Group"/>
+                    title="Create a Group Thread" style="background-color: whitesmoke"
+                    name="New Group"/>
+            <template v-for="user in users" :key="'user'+user.id">
+              <chat :id="user.id" :name="user.name"/>
+            </template>
           </div>
         </div>
         <div id="threadview" :class="{ 'd-none': threadView, 'parent-height':true}">
@@ -106,7 +112,8 @@ export default {
       text: '',
       addGroup: true,
       newChat: true,
-      threadView: false
+      threadView: false,
+      users: []
     }
   },
   computed: {
@@ -119,6 +126,7 @@ export default {
     await this.checkLogin()
     this.threads = null
     this.getThreads()
+    this.fetchUser()
   },
   methods: {
     getThreads () {
@@ -157,6 +165,15 @@ export default {
     registerThreadClick (threadId) {
       this.selectedId = threadId
       this.fetchThreadMessages()
+    },
+    fetchUser () {
+      axios.get('http://127.0.0.1:8000/api/users/all', {
+        headers: {
+          Authorization: 'Bearer ' + window.localStorage.getItem('api_token')
+        }
+      })
+        .then(response => (this.users = response.data.users))
+        .catch()
     },
     fetchThreadMessages () {
       axios.get(`http://127.0.0.1:8000/api/thread-message/${this.selectedId}`, {
