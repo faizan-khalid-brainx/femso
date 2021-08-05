@@ -101,6 +101,7 @@
 import Chat from '@/components/Chat'
 import TextMessage from '@/components/TextMessage'
 import axios from 'axios'
+// import Echo from 'laravel-echo'
 
 export default {
   name: 'ChatLayout',
@@ -138,6 +139,11 @@ export default {
     this.threads = null
     this.getThreads()
     this.fetchUser()
+    window.Echo.channel('message-update')
+      .listen('NewMessage', (e) => {
+        this.fetchThreadMessages()
+        console.log('event occurred', e)
+      })
   },
   methods: {
     getThreads () {
