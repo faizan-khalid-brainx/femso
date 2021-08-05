@@ -252,9 +252,11 @@ export default {
       [this.addGroup, this.newChat, this.threadView] = [1, 1, 0]
     },
     async groupToConversation () {
-      this.selectedId = await this.fetchGroupThread()
-      this.fetchThreadMessages()
-      this.getThreads();
+      if (this.group.length) {
+        this.selectedId = await this.fetchGroupThread()
+        this.fetchThreadMessages()
+        this.getThreads()
+      }
       [this.group, this.groupName] = [[], ''];
       [this.addGroup, this.newChat, this.threadView] = [1, 1, 0]
     },
