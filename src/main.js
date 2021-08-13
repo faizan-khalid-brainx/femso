@@ -13,9 +13,6 @@ window.Echo = new Echo({
   key: process.env.VUE_APP_PUSHER_APP_KEY,
   cluster: process.env.VUE_APP_PUSHER_APP_CLUSTER,
   forceTLS: true
-  // encryption: true
 })
-
-// console.log(Echo)
 
 createApp(App).use(store).use(router).mount('#app')
