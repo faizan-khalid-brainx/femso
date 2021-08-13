@@ -102,7 +102,6 @@
 import Chat from '@/components/Chat'
 import TextMessage from '@/components/TextMessage'
 import axios from 'axios'
-// import Echo from 'laravel-echo'
 
 export default {
   name: 'ChatLayout',
@@ -452,7 +451,6 @@ export default {
 #backArrow {
   padding-left: 30px;
   padding-right: 30px;
-  /*display: inline-block;*/
   height: 100%;
   width: auto;
 }

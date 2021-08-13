@@ -10,11 +10,14 @@
         <p v-else class="col chat-name">{{ participants[0]+ participants.length-1 + 'others' }}</p>
         <p class="time">{{last_updated}}</p>
       </div>
-<!--      <div class="row m-0 message-row">-->
-<!--        <p class="name">govi: </p>-->
-<!--        <p class="col px-0">this is a text</p>-->
-<!--        <p class="time">mut</p>-->
-<!--      </div>-->
+      <div class="row m-0 message-row">
+        <!--   test data: 'govi:'     -->
+        <p class="name"></p>
+        <!--    test data: 'this is a text'    -->
+        <p class="col px-0"></p>
+        <!--    test data: 'mut'    -->
+        <p class="time"></p>
+      </div>
     </div>
   </div>
 </template>
