@@ -5,8 +5,10 @@
     </div>
     <div class="d-flex flex-column justify-content-center info-col col">
       <div class="row m-0 name-row">
-        <p class="col" style="font-size: 17px; font-weight: 600">{{ name }}</p>
-<!--        <p class="time">12:00 PM</p>-->
+        <p v-if="name!==null" class="col chat-name">{{ name }}</p>
+        <p v-else-if="participants.length===1" class="col chat-name">{{ participants.join() }}</p>
+        <p v-else class="col chat-name">{{ participants[0]+ participants.length-1 + 'others' }}</p>
+        <p class="time">{{last_updated}}</p>
       </div>
 <!--      <div class="row m-0 message-row">-->
 <!--        <p class="name">govi: </p>-->
@@ -23,7 +25,9 @@ export default {
   props: {
     name: String,
     threadid: Number,
-    selected: Number
+    selected: Number,
+    participants: Array,
+    last_updated: String
   },
   computed: {
     chatSelection () {
@@ -51,6 +55,11 @@ p{
 
 .chat{
   height: 72px;
+}
+
+.chat-name{
+  font-size: 17px;
+  font-weight: 600;
 }
 
 .chat-selection{

@@ -56,7 +56,8 @@
           <div class="container-body scrollable-y">
             <div v-for="thread in threads" :key="'thread'+thread.id">
               <chat title="Open Thread" @click="registerThreadClick(thread.id)" :name="thread.thread_name"
-                    :threadid="thread.id" :selected="selectedId"/>
+                    :threadid="thread.id" :selected="selectedId"
+                    :participants="thread.names" :last_updated="thread.updated_at"/>
             </div>
             <div v-if="!threads" class="d-flex flex-column justify-content-center h-100">
               <h5 class="text-center">No threads here, Its kinda lonely</h5>
